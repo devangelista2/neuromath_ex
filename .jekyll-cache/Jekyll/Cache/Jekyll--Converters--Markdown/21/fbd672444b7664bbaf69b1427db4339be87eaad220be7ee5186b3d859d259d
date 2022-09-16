@@ -1,0 +1,29 @@
+I"£<p><img src="/assets/article_images/2022-08-31-introduction/data_science.png" alt="" /></p>
+
+<h2 id="what-is-data-science">What is Data Science?</h2>
+<p>Todayâ€™s world is full of data. We tend to collect data for basically everything we do. In the last decades, computer scientists developed techniques to use the informations contained in the data, to develop algorithm able to solve complex tasks, usually reserved to humans and, for this reason, algorithms of those kind are referred to as <em>Intelligent</em>. The set of all the techniques interracting with data is called <strong>Data Science</strong>.</p>
+
+<p>The diagram below visually represents the relationship between each of the component of Data Science, that is:</p>
+
+<ul>
+  <li>Data Minining;</li>
+  <li>Big Data;</li>
+  <li>Artifical Intelligence (AI);</li>
+  <li>Machine Learning (ML);</li>
+  <li>Deep Learning (DL);</li>
+</ul>
+
+<p>To start our journey in the world of neural networks, we first need to understand the meaning of all those terms.</p>
+
+<p><img src="https://qph.fs.quoracdn.net/main-qimg-0434dc91cfe529790780b590da4d4f90" alt="" /></p>
+
+<h3 id="data-mining">Data Mining</h3>
+<p><em>Definition: Data Mining is defined as the set of all the techniques and algorithms useful to extract knowledge and informations from data.</em></p>
+
+<p>Data Mining is usually performed via statistical methods, with the intent of understanding the correlation between the different <em>features</em>.
+Usually, raw data cannot be used directly from Data Mining algorithms and need to be manually cleaned up by a user. This step is usually called <strong>Data Cleaning</strong>.</p>
+
+<h3 id="big-data">Big Data</h3>
+
+<p>$f(x) = x^2$</p>
+:ET
