@@ -251,3 +251,6 @@ B = A[:2, :2]
 > **_Exercise:_** Create an $n \times n$ matrix $A$ of normally distributed values. Then, create a second matrix $B$ with the same shape of $A$ such that it is equal to $A$ when $a_{i, j}$ is positive, while it is equal to $0$ when $a_{i, j} < 0$.
 
 <py-repl></py-repl>
+
+## Going on
+An application of Numpy will be on [Linear Systems]({% post_url 2022-09-16-linear_systems %}).

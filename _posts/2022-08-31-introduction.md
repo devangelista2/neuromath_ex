@@ -30,5 +30,3 @@ Data Mining is usually performed via statistical methods, with the intent of und
 Usually, raw data cannot be used directly from Data Mining algorithms and need to be manually cleaned up by a user. This step is usually called **Data Cleaning**.
 
 ### Big Data
-
-$f(x) = x^2$
