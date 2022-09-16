@@ -4,7 +4,7 @@ title:  "Introduction to Python for Numerical Linear Algebra"
 date: 2022-09-16 8:00
 categories: jekyll update
 tags: featured
-image: /assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg
+image: /assets/images/numpy_logo.png
 mathjax: true
 ---
 
