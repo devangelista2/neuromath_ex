@@ -5,7 +5,6 @@ date:   2022-08-31 15:57
 categories: jekyll update
 tags: featured
 image: /assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg
-mathjax: true
 ---
 ![](/assets/article_images/2022-08-31-introduction/data_science.png)
 
