@@ -331,7 +331,7 @@ body { font-family: Open Sans, MundoSans, "Helvetica Neue", Arial, Helvetica, sa
 
 .post-tag-articleimage { display: none; }
 
-pre, code { font-size: 15px; border: 1px solid #e8e8e8; border-radius: 3px; background-color: #eef; }
+pre, code { font-size: 14px; border: 1px solid #e8e8e8; border-radius: 3px; background-color: #eef; }
 
 code { padding: 1px 5px; }
 
