@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>Linear Systems with Numpy and Scipy</title>
-  <meta name="description" content="In the following we want to understand how to use numpy and scipy to solve Linear Systems with Python." />
+  <meta name="description" content="Table of Contents  Introduction  Testing the Accuracy  Condition Number  Homework" />
 
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -20,7 +20,7 @@
   <meta property="og:site_name" content="NeuroMath" />
   <meta property="og:title" content="Linear Systems with Numpy and Scipy"/>
   
-  <meta property="og:description" content="In the following we want to understand how to use numpy and scipy to solve Linear Systems with Python." />
+  <meta property="og:description" content="Table of Contents  Introduction  Testing the Accuracy  Condition Number  Homework" />
   
   <meta property="og:image" content="http://localhost:4000/assets/images/data_science.jpg" />
   <meta property="og:url" content="http://localhost:4000/jekyll/update/2022/09/16/linear_systems.html" >
@@ -95,7 +95,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>Linear Systems with Numpy and Scipy</title>
-  <meta name="description" content="In the following we want to understand how to use numpy and scipy to solve Linear Systems with Python." />
+  <meta name="description" content="Table of Contents  Introduction  Testing the Accuracy  Condition Number  Homework" />
 
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -106,7 +106,7 @@
   <meta property="og:site_name" content="NeuroMath" />
   <meta property="og:title" content="Linear Systems with Numpy and Scipy"/>
   
-  <meta property="og:description" content="In the following we want to understand how to use numpy and scipy to solve Linear Systems with Python." />
+  <meta property="og:description" content="Table of Contents  Introduction  Testing the Accuracy  Condition Number  Homework" />
   
   <meta property="og:image" content="http://localhost:4000/assets/images/data_science.jpg" />
   <meta property="og:url" content="http://localhost:4000/jekyll/update/2022/09/16/linear_systems.html" >
@@ -194,7 +194,19 @@
             <span class="post-reading-time"></span> read
           </div>
           <a name="topofpage"></a>
-          <p>In the following we want to understand how to use <code class="language-plaintext highlighter-rouge">numpy</code> and <code class="language-plaintext highlighter-rouge">scipy</code> to solve Linear Systems with Python.</p>
+          <hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#testing-the-accuracy">Testing the Accuracy</a></li>
+  <li><a href="#condition-number">Condition Number</a></li>
+  <li><a href="#homework">Homework</a></li>
+</ol>
+
+<hr />
+
+<h2 id="introduction">Introduction</h2>
+<p>In the following we want to study how to use <code class="language-plaintext highlighter-rouge">numpy</code> and <code class="language-plaintext highlighter-rouge">scipy</code> to solve Linear Systems with Python. Most if the function in Numpy and Scipy for Linear Algebra are contained in the sub-packages <code class="language-plaintext highlighter-rouge">np.linalg</code> and <code class="language-plaintext highlighter-rouge">scipy.linalg</code>, as you will see in the forllowing.</p>
 
 <p>To fix the notation, given a matrix $A \in \mathbb{R}^{n \times n}$ and a vector $y \in \mathbb{R}^n$, <em>solving</em> a linear system means finding (when exists) a vector $x \in \mathbb{R}^n$ such that it solves</p>
 
@@ -212,10 +224,57 @@ print(f"The solution is {x_sol}.")
 </code></pre></div></div>
 
 <h2 id="testing-the-accuracy">Testing the accuracy</h2>
-<p>You already studied that, when the matrix $A$ is ill-conditioned, the solution of a linear system won’t be correct, since the small perturbations on $y$ introduced by the floating point system will be amplified and the corresponding solution will be drammatically distant to the true solution.</p>
+<p>You already studied that, when the matrix $A$ is ill-conditioned, the solution of a linear system won’t be correct, since the small perturbations on $y$ introduced by the floating point system will be amplified and the corresponding solution will be drammatically distant to the true solution. To check how accurate our computed solution is to the true solution of the system (i.e. to quantify the amplification of the perturbation on the data), it is common to use the relative error, which is defined as</p>
+
+\[E(x_{true}, x) = \frac{|| x_{true} - x ||_2}{|| x_{true} ||_2}\]
+
+<p>Clearly, the problem is that if our algorithm fails in recovering the true solution due to the ill-conditioning of the system matrix $A$, how can we compute the true solution $x_{true}$, required to compute $E(x_{true}, x)$? The solution is to build a <strong>test problem</strong>.</p>
+
+<h3 id="creating-a-test-problem">Creating a Test Problem</h3>
+<p>Consider a matrix $A \in \mathbb{R}^{n \times n}$ and assume we want to test the accuracy of an algorithm solving systems involving $A$. Fix an $n$-dimensional vector $x_{true} \in \mathbb{R}^n$, and compute $b = Ax_{true}$. Clearly, this procedure defines a linear system</p>
+
+\[Ax = b\]
+
+<p>of which we know that $x_{true}$ is a solution, since we built the term $b$ accordingly. Now, when we apply our algorithm to that linear system, we get a solution $x_{sol}$, approximately solving $Ax = b$. Given that, we can always compute the relative error $E(x_{true}, x_{sol})$ asssociated to the solution obtained by the algorithm. In numpy, this can be simply done as</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+
+# Setting up the dimension
+n = 10
+
+# Creating the test problem
+A = np.random.randn(n, n) # n x n random matrix
+x_true = np.ones((n, ))   # n-dimensional vector of ones
+
+b = A @ x_true # Compute the term b s.t. x_true is a sol.
+
+# Solving the system with numpy
+x_sol = np.solve(A, b)
+
+# Computing the accuracy
+E_rel = np.linalg.norm(x_true - x_sol, 2) / np.linalg.norm(x_true, 2)
+print(f"The relative error is {E_rel}")
+</code></pre></div></div>
+
+<h2 id="condition-number">Condition number</h2>
+<p>You should already know that the conditioning of an $n \times n$ matrix $A$ can be quantified by a term called <strong>condition number</strong> which, whenever $A$ is invertible, is defined as</p>
+
+\[k_p(A) = ||A||_p || A^{-1} ||_p\]
+
+<p>Where $p \geq 1$ idenfities the norm on which the condition number is computed.</p>
+
+<p>An invertible matrix $A$ is said to be ill-conditioned when its condition number grows exponentially with the dimension of the problem, $n$.</p>
+
+<p>The condition number is related to the accuracy of the computed solution of a linear system by the following inequality</p>
+
+\[\frac{|| \delta x ||}{||x||} \leq k(A) \Bigl( \frac{||\delta A||}{|| A ||} + \frac{|| \delta b ||}{|| b ||} \Bigr)\]
+
+<p>which implies that the relative error on the computed solution is big whenever $k(A)$ is big. Moreover, note that as a consequence of the formula above, the accuracy of a computed solution is partially a proprierty of the condition number of $A$ itself, meaning that <em>no algorithm</em> is able to compute an accurate solution to an ill-conditioned system.</p>
+
+<p>Computing the $p$-condition number of a matrix $A$ in Numpy is trivial, just use the function <code class="language-plaintext highlighter-rouge">np.linalg.cond(A, p)</code> to compute $k_p(A)$.</p>
 
 <h2 id="homework">Homework</h2>
-<p>Please refer to the <a href="/_download/homework1.pdf">Homework PDF</a>.</p>
+<p>Please refer to the <a href="https://virtuale.unibo.it/pluginfile.php/1364076/mod_resource/content/1/homework1.pdf">Homework PDF</a> on Virtuale.</p>
 
         </section>
         <footer class="post-footer">
