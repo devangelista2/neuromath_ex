@@ -1,9 +1,11 @@
-I"8<hr />
+I"š<hr />
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
   <li><a href="#plotting">Plotting</a></li>
   <li><a href="#customize-the-plot">Customize the Plot</a></li>
   <li><a href="#multiplot-and-line-customization">Multiplot and Line customization</a></li>
   <li><a href="#subplots">Subplots</a></li>
+  <li><a href="#plotting-data">Plotting data</a></li>
+  <li><a href="#going-on">Going on</a></li>
 </ol>
 :ET

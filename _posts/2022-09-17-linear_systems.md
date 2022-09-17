@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Linear Systems with Numpy and Scipy"
-date: 2022-09-16 17:00
+date: 2022-09-17 10:00
 categories: jekyll update
 tags: featured
 image: /assets/images/data_science.jpg

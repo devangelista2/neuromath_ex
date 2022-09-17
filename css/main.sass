@@ -613,9 +613,31 @@ code
   padding: 1px 5px
 
 pre
-  padding: 8px 12px
-  overflow-x: scroll
+  padding: 8px 12px /* overflow-x: scroll */
   > code
     border: 0
     padding-right: 0
     padding-left: 0
+
+details
+    border: 1px solid #aaa
+    border-radius: 4px
+    padding: .5em .5em 0
+
+
+summary
+    margin: -.5em -.5em 0
+    padding: .5em
+    background-color: #eef
+    font-family: $font-serif
+    font-size: 20px
+    font-weight: 300
+
+
+details[open]
+    padding: .5em
+
+
+details[open] summary
+    border-bottom: 1px solid #aaa
+    margin-bottom: .5em

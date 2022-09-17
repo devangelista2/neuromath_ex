@@ -8,10 +8,6 @@ image: /assets/images/numpy_logo.png
 mathjax: true
 ---
 
-<!-- for pyscript -->
-<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-<script defer src="https://pyscript.net/latest/pyscript.js"></script>
-
 ---
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -19,7 +15,9 @@ mathjax: true
 3. [Arrays Operations](#arrays-operations)
 4. [Logic Operations between vectors](#logic-operations-between-vectors)
 5. [Slicing](#slicing)
-6. [Going on](#going-on)
+6. [Matrix and Vector Manipulation](#matrix-and-vector-manipulation)
+7. [Read data with pandas](#read-data-with-pandas)
+8. [Going on](#going-on)
 
 ---
 
@@ -104,7 +102,21 @@ print(a)
 > $$ A =  \begin{bmatrix} 2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2\end{bmatrix}$$
 > Moreover, print its shape.
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+    
+    <pre>
+import numpy as np
+
+# Define A
+A = np.array([[2, 1, 1], [1, 2, 1], [1, 1, 2]])
+
+# Print A and its shape
+print(A)
+print(f"Shape of A is: {A.shape}")
+    </pre>
+
+</details>
 
 ---
 
@@ -173,7 +185,29 @@ print(y1 + y2)
 > **_Exercise:_** Create two vectors $x_1$ and $x_2$ of dimension $n$ and check that 
 > $$ e^{x_1} e^{x_2} = e^{x_1 + x_2} $$
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+    
+    <pre>
+import numpy as np
+
+# Setup the dimensionality of the problem
+n = 10
+
+# Create x_1 and x_2
+x_1 = np.random.rand(n)
+x_2 = np.ones((n, ))
+
+# Compute e^x_1+x_2 and e^x1 e^x2
+e_x_1_x_2 = np.exp(x_1 + x_2)
+e_x_1_e_x_2 = np.exp(x_1) * np.exp(x_2)
+
+# Check equality
+print(f"e^x_1 * e^x_2 = {e_x_1_x_2}")
+print(f"e^x_1 + x_2 = {e_x_1_e_x_2}")
+    </pre>
+
+</details>
 
 ---
 ## Logic operations between vectors
@@ -190,7 +224,6 @@ Clearly, it is also possible to define element-wise logical operations between a
 |    !     |   NOT   |
 
 <br>
-<py-repl></py-repl>
 
 ---
 ## Slicing
@@ -257,7 +290,59 @@ B = A[:2, :2]
 
 > **_Exercise:_** Create an $n \times n$ matrix $A$ of normally distributed values. Then, create a second matrix $B$ with the same shape of $A$ such that it is equal to $A$ when $a_{i, j}$ is positive, while it is equal to $0$ when $a_{i, j} < 0$.
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+
+    <pre>
+import numpy as np
+
+# Setup the dimensionality of the problem
+n = 10
+
+# Create matrix A and B
+A = np.random.randn(n, n)
+
+B = A
+B[A<0] = 0
+    </pre>
+
+</details>
+
+## Matrix and Vector Manipulation
+Numpy also implements the basic operations on matrix and vectors. In particular, the following functions can be useful in this course:
+
+* `np.linalg.norm(a, p)`: Computes the $p$-norm of a vector or a matrix $a$;
+* `np.linalg.cond(A, p)`: Computes the condition number in $p$-norm of a matrix $A$;
+* `np.linalg.matrix_rank(A)`: Computes the rank of the matrix $A$;
+* `np.linalg.inv(A)`: When invertible, compute the inverse matrix of $A$. _Warning:_ Very slow;
+* `np.transpose(A)`: Compute the transpose matrix of $A$. It is equivalent to `A.T`;
+* `np.reshape(a, new_shape)`: Reshape an array `a` to a given shape.
+
+## Read data with pandas
+Since we will frequently work with data, it will be important to be able to manipulate them. In this class, we will learn how to load a dataset into Python by using a library called `pandas`, whose documentation can be found [here](https://pandas.pydata.org/docs/user_guide/index.html#user-guide). 
+
+As an example, download the [data](https://virtuale.unibo.it/mod/resource/view.php?id=1002928) from Virtuale, which is taken by Kaggle at the following link: [www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014](https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014). 
+
+Then, place it in the same folder as the Python file on which you are working and use the following code to load it in memory.
+
+```
+import pandas as pd
+
+# Read data from a csv file
+data = pd.read_csv('./data/US_births_2000-2014_SSA.csv')
+```
+
+Pandas uses similar function name as numpy to keep everything coherent. For example, we can check the shape of `data` by using the function `print(data.shape)`. Moreover, a pandas dataframe can be casted into a numpy array by simply
+
+```
+import numpy as np
+
+# Cast into numpy array
+np_data = np.array(data)
+
+# Check that the dimension didn't change
+print(f"{data.shape} should be equal to {np_data.shape}")
+```
 
 ## Going on
-An application of Numpy will be on [Linear Systems]({% post_url 2022-09-16-linear_systems %}). An introduction to plots in Python with matplotlib can be found [here]({% post_url 2022-09-17-matplotlib %}).
+An application of Numpy will be on [Linear Systems]({% post_url 2022-09-17-linear_systems %}). An introduction to plots in Python with matplotlib can be found [here]({% post_url 2022-09-16-matplotlib %}).

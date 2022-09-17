@@ -1,9 +1,4 @@
-I"ŸF<!-- for pyscript -->
-<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-
-<script defer="" src="https://pyscript.net/latest/pyscript.js"></script>
-
-<hr />
+I"oU<hr />
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
   <li><a href="#introduction">Introduction</a></li>
@@ -11,6 +6,8 @@
   <li><a href="#arrays-operations">Arrays Operations</a></li>
   <li><a href="#logic-operations-between-vectors">Logic Operations between vectors</a></li>
   <li><a href="#slicing">Slicing</a></li>
+  <li><a href="#matrix-and-vector-manipulation">Matrix and Vector Manipulation</a></li>
+  <li><a href="#read-data-with-pandas">Read data with pandas</a></li>
   <li><a href="#going-on">Going on</a></li>
 </ol>
 
@@ -94,7 +91,21 @@ print(a)
 Moreover, print its shape.</p>
 </blockquote>
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+    
+    <pre>
+import numpy as np
+
+# Define A
+A = np.array([[2, 1, 1], [1, 2, 1], [1, 1, 2]])
+
+# Print A and its shape
+print(A)
+print(f"Shape of A is: {A.shape}")
+    </pre>
+
+</details>
 
 <hr />
 
@@ -166,7 +177,29 @@ print(y1 + y2)
 \(e^{x_1} e^{x_2} = e^{x_1 + x_2}\)</p>
 </blockquote>
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+    
+    <pre>
+import numpy as np
+
+# Setup the dimensionality of the problem
+n = 10
+
+# Create x_1 and x_2
+x_1 = np.random.rand(n)
+x_2 = np.ones((n, ))
+
+# Compute e^x_1+x_2 and e^x1 e^x2
+e_x_1_x_2 = np.exp(x_1 + x_2)
+e_x_1_e_x_2 = np.exp(x_1) * np.exp(x_2)
+
+# Check equality
+print(f"e^x_1 * e^x_2 = {e_x_1_x_2}")
+print(f"e^x_1 + x_2 = {e_x_1_e_x_2}")
+    </pre>
+
+</details>
 
 <hr />
 <h2 id="logic-operations-between-vectors">Logic operations between vectors</h2>
@@ -212,7 +245,6 @@ print(y1 + y2)
 </table>
 
 <p><br /></p>
-<py-repl></py-repl>
 
 <hr />
 <h2 id="slicing">Slicing</h2>
@@ -273,8 +305,60 @@ B = A[:2, :2]
   <p><strong><em>Exercise:</em></strong> Create an $n \times n$ matrix $A$ of normally distributed values. Then, create a second matrix $B$ with the same shape of $A$ such that it is equal to $A$ when $a_{i, j}$ is positive, while it is equal to $0$ when $a_{i, j} &lt; 0$.</p>
 </blockquote>
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+
+    <pre>
+import numpy as np
+
+# Setup the dimensionality of the problem
+n = 10
+
+# Create matrix A and B
+A = np.random.randn(n, n)
+
+B = A
+B[A&lt;0] = 0
+    </pre>
+
+</details>
+
+<h2 id="matrix-and-vector-manipulation">Matrix and Vector Manipulation</h2>
+<p>Numpy also implements the basic operations on matrix and vectors. In particular, the following functions can be useful in this course:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">np.linalg.norm(a, p)</code>: Computes the $p$-norm of a vector or a matrix $a$;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.linalg.cond(A, p)</code>: Computes the condition number in $p$-norm of a matrix $A$;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.linalg.matrix_rank(A)</code>: Computes the rank of the matrix $A$;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.linalg.inv(A)</code>: When invertible, compute the inverse matrix of $A$. <em>Warning:</em> Very slow;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.transpose(A)</code>: Compute the transpose matrix of $A$. It is equivalent to <code class="language-plaintext highlighter-rouge">A.T</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.reshape(a, new_shape)</code>: Reshape an array <code class="language-plaintext highlighter-rouge">a</code> to a given shape.</li>
+</ul>
+
+<h2 id="read-data-with-pandas">Read data with pandas</h2>
+<p>Since we will frequently work with data, it will be important to be able to manipulate them. In this class, we will learn how to load a dataset into Python by using a library called <code class="language-plaintext highlighter-rouge">pandas</code>, whose documentation can be found <a href="https://pandas.pydata.org/docs/user_guide/index.html#user-guide">here</a>.</p>
+
+<p>As an example, download the <a href="https://virtuale.unibo.it/mod/resource/view.php?id=1002928">data</a> from Virtuale, which is taken by Kaggle at the following link: <a href="https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014">www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014</a>.</p>
+
+<p>Then, place it in the same folder as the Python file on which you are working and use the following code to load it in memory.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pandas as pd
+
+# Read data from a csv file
+data = pd.read_csv('./data/US_births_2000-2014_SSA.csv')
+</code></pre></div></div>
+
+<p>Pandas uses similar function name as numpy to keep everything coherent. For example, we can check the shape of <code class="language-plaintext highlighter-rouge">data</code> by using the function <code class="language-plaintext highlighter-rouge">print(data.shape)</code>. Moreover, a pandas dataframe can be casted into a numpy array by simply</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+
+# Cast into numpy array
+np_data = np.array(data)
+
+# Check that the dimension didn't change
+print(f"{data.shape} should be equal to {np_data.shape}")
+</code></pre></div></div>
 
 <h2 id="going-on">Going on</h2>
-<p>An application of Numpy will be on <a href="/jekyll/update/2022/09/16/linear_systems.html">Linear Systems</a>. An introduction to plots in Python with matplotlib can be found <a href="/jekyll/update/2022/09/17/matplotlib.html">here</a>.</p>
+<p>An application of Numpy will be on <a href="/jekyll/update/2022/09/17/linear_systems.html">Linear Systems</a>. An introduction to plots in Python with matplotlib can be found <a href="/jekyll/update/2022/09/16/matplotlib.html">here</a>.</p>
 :ET

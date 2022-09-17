@@ -1,11 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-17T13:00:54+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">NeuroMath</title><subtitle>A blog about Mathematics and Neural Networks.
-</subtitle><author><name>Davide Evangelista</name></author><entry><title type="html">Plotting with matplotlib</title><link href="http://localhost:4000/jekyll/update/2022/09/17/matplotlib.html" rel="alternate" type="text/html" title="Plotting with matplotlib" /><published>2022-09-17T10:00:00+02:00</published><updated>2022-09-17T10:00:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/17/matplotlib</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/17/matplotlib.html"><![CDATA[<hr />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-17T16:46:06+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">NeuroMath</title><subtitle>A blog about Mathematics and Neural Networks.
+</subtitle><author><name>Davide Evangelista</name></author><entry><title type="html">Linear Systems with Numpy and Scipy</title><link href="http://localhost:4000/jekyll/update/2022/09/17/linear_systems.html" rel="alternate" type="text/html" title="Linear Systems with Numpy and Scipy" /><published>2022-09-17T10:00:00+02:00</published><updated>2022-09-17T10:00:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/17/linear_systems</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/17/linear_systems.html"><![CDATA[<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#testing-the-accuracy">Testing the Accuracy</a></li>
+  <li><a href="#condition-number">Condition Number</a></li>
+  <li><a href="#homework">Homework</a></li>
+</ol>
+
+<hr />
+
+<h2 id="introduction">Introduction</h2>
+<p>In the following we want to study how to use <code class="language-plaintext highlighter-rouge">numpy</code> and <code class="language-plaintext highlighter-rouge">scipy</code> to solve Linear Systems with Python. Most if the function in Numpy and Scipy for Linear Algebra are contained in the sub-packages <code class="language-plaintext highlighter-rouge">np.linalg</code> and <code class="language-plaintext highlighter-rouge">scipy.linalg</code>, as you will see in the forllowing.</p>
+
+<p>To fix the notation, given a matrix $A \in \mathbb{R}^{n \times n}$ and a vector $y \in \mathbb{R}^n$, <em>solving</em> a linear system means finding (when exists) a vector $x \in \mathbb{R}^n$ such that it solves</p>
+
+\[Ax = y\]
+
+<p>This is not hard to do in <code class="language-plaintext highlighter-rouge">numpy</code>, since it implements a function <code class="language-plaintext highlighter-rouge">np.linalg.solve</code>, taking as input a 2-dimensional array <code class="language-plaintext highlighter-rouge">A</code> and a 1-dimensional array <code class="language-plaintext highlighter-rouge">y</code>, and returns the solution <code class="language-plaintext highlighter-rouge">x</code> to the linear system. In particular:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Generates the problem
+A = np.array([[1, 1, 1], [2, 1, 2], [0, 0, 1]])
+y = np.array([0, 1, 0])
+
+# Solve the system
+x_sol = np.linalg.solve(A, y)
+print(f"The solution is {x_sol}.")
+</code></pre></div></div>
+
+<h2 id="testing-the-accuracy">Testing the accuracy</h2>
+<p>You already studied that, when the matrix $A$ is ill-conditioned, the solution of a linear system won’t be correct, since the small perturbations on $y$ introduced by the floating point system will be amplified and the corresponding solution will be drammatically distant to the true solution. To check how accurate our computed solution is to the true solution of the system (i.e. to quantify the amplification of the perturbation on the data), it is common to use the relative error, which is defined as</p>
+
+\[E(x_{true}, x) = \frac{|| x_{true} - x ||_2}{|| x_{true} ||_2}\]
+
+<p>Clearly, the problem is that if our algorithm fails in recovering the true solution due to the ill-conditioning of the system matrix $A$, how can we compute the true solution $x_{true}$, required to compute $E(x_{true}, x)$? The solution is to build a <strong>test problem</strong>.</p>
+
+<h3 id="creating-a-test-problem">Creating a Test Problem</h3>
+<p>Consider a matrix $A \in \mathbb{R}^{n \times n}$ and assume we want to test the accuracy of an algorithm solving systems involving $A$. Fix an $n$-dimensional vector $x_{true} \in \mathbb{R}^n$, and compute $b = Ax_{true}$. Clearly, this procedure defines a linear system</p>
+
+\[Ax = b\]
+
+<p>of which we know that $x_{true}$ is a solution, since we built the term $b$ accordingly. Now, when we apply our algorithm to that linear system, we get a solution $x_{sol}$, approximately solving $Ax = b$. Given that, we can always compute the relative error $E(x_{true}, x_{sol})$ asssociated to the solution obtained by the algorithm. In numpy, this can be simply done as</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+
+# Setting up the dimension
+n = 10
+
+# Creating the test problem
+A = np.random.randn(n, n) # n x n random matrix
+x_true = np.ones((n, ))   # n-dimensional vector of ones
+
+b = A @ x_true # Compute the term b s.t. x_true is a sol.
+
+# Solving the system with numpy
+x_sol = np.solve(A, b)
+
+# Computing the accuracy
+E_rel = np.linalg.norm(x_true - x_sol, 2) / np.linalg.norm(x_true, 2)
+print(f"The relative error is {E_rel}")
+</code></pre></div></div>
+
+<h2 id="condition-number">Condition number</h2>
+<p>You should already know that the conditioning of an $n \times n$ matrix $A$ can be quantified by a term called <strong>condition number</strong> which, whenever $A$ is invertible, is defined as</p>
+
+\[k_p(A) = ||A||_p || A^{-1} ||_p\]
+
+<p>Where $p \geq 1$ idenfities the norm on which the condition number is computed.</p>
+
+<p>An invertible matrix $A$ is said to be ill-conditioned when its condition number grows exponentially with the dimension of the problem, $n$.</p>
+
+<p>The condition number is related to the accuracy of the computed solution of a linear system by the following inequality</p>
+
+\[\frac{|| \delta x ||}{||x||} \leq k(A) \Bigl( \frac{||\delta A||}{|| A ||} + \frac{|| \delta b ||}{|| b ||} \Bigr)\]
+
+<p>which implies that the relative error on the computed solution is big whenever $k(A)$ is big. Moreover, note that as a consequence of the formula above, the accuracy of a computed solution is partially a proprierty of the condition number of $A$ itself, meaning that <em>no algorithm</em> is able to compute an accurate solution to an ill-conditioned system.</p>
+
+<p>Computing the $p$-condition number of a matrix $A$ in Numpy is trivial, just use the function <code class="language-plaintext highlighter-rouge">np.linalg.cond(A, p)</code> to compute $k_p(A)$.</p>
+
+<h2 id="homework">Homework</h2>
+<p>Please refer to the <a href="https://virtuale.unibo.it/pluginfile.php/1364076/mod_resource/content/1/homework1.pdf">Homework PDF</a> on Virtuale.</p>]]></content><author><name>Davide Evangelista</name></author><category term="jekyll" /><category term="update" /><category term="featured" /><summary type="html"><![CDATA[Table of Contents Introduction Testing the Accuracy Condition Number Homework]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/data_science.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/data_science.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Plotting with matplotlib</title><link href="http://localhost:4000/jekyll/update/2022/09/16/matplotlib.html" rel="alternate" type="text/html" title="Plotting with matplotlib" /><published>2022-09-16T17:00:00+02:00</published><updated>2022-09-16T17:00:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/16/matplotlib</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/16/matplotlib.html"><![CDATA[<hr />
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
   <li><a href="#plotting">Plotting</a></li>
   <li><a href="#customize-the-plot">Customize the Plot</a></li>
   <li><a href="#multiplot-and-line-customization">Multiplot and Line customization</a></li>
   <li><a href="#subplots">Subplots</a></li>
+  <li><a href="#plotting-data">Plotting data</a></li>
+  <li><a href="#going-on">Going on</a></li>
 </ol>
 
 <hr />
@@ -188,92 +270,23 @@ plt.grid()
 plt.show()
 </code></pre></div></div>
 
-<p><img src="/assets/images/matplotlib_tutorial/plot_5.png" alt="" /></p>]]></content><author><name>Davide Evangelista</name></author><category term="jekyll" /><category term="update" /><category term="featured" /><summary type="html"><![CDATA[Table of contents Plotting Customize the Plot Multiplot and Line customization Subplots]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/matplotlib_header.png" /><media:content medium="image" url="http://localhost:4000/assets/images/matplotlib_header.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Linear Systems with Numpy and Scipy</title><link href="http://localhost:4000/jekyll/update/2022/09/16/linear_systems.html" rel="alternate" type="text/html" title="Linear Systems with Numpy and Scipy" /><published>2022-09-16T17:00:00+02:00</published><updated>2022-09-16T17:00:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/16/linear_systems</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/16/linear_systems.html"><![CDATA[<hr />
-<h2 id="table-of-contents">Table of Contents</h2>
-<ol>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#testing-the-accuracy">Testing the Accuracy</a></li>
-  <li><a href="#condition-number">Condition Number</a></li>
-  <li><a href="#homework">Homework</a></li>
-</ol>
+<p><img src="/assets/images/matplotlib_tutorial/plot_5.png" alt="" /></p>
 
-<hr />
+<h2 id="exercise-plotting-data">Exercise: Plotting data</h2>
+<p>Going back to the example in the <a href="/jekyll/update/2022/09/16/introduction_to_python_numpy.html">introductory post</a> on Numpy where we introduced the library pandas, useful to read data into Python, we can now use matplotlib to visualize it.</p>
 
-<h2 id="introduction">Introduction</h2>
-<p>In the following we want to study how to use <code class="language-plaintext highlighter-rouge">numpy</code> and <code class="language-plaintext highlighter-rouge">scipy</code> to solve Linear Systems with Python. Most if the function in Numpy and Scipy for Linear Algebra are contained in the sub-packages <code class="language-plaintext highlighter-rouge">np.linalg</code> and <code class="language-plaintext highlighter-rouge">scipy.linalg</code>, as you will see in the forllowing.</p>
+<p>First of all, download (if required) the <a href="https://virtuale.unibo.it/mod/resource/view.php?id=1002928">data</a> from Virtuale or equivalently by Kaggle at the following link: <a href="https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014">www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014</a>, and place the <em>.csv</em> file into the same folder of your <code class="language-plaintext highlighter-rouge">.py</code> file. Then, with the help of what you studied in the <a href="/jekyll/update/2022/09/16/introduction_to_python_numpy.html">introductory post</a>,</p>
 
-<p>To fix the notation, given a matrix $A \in \mathbb{R}^{n \times n}$ and a vector $y \in \mathbb{R}^n$, <em>solving</em> a linear system means finding (when exists) a vector $x \in \mathbb{R}^n$ such that it solves</p>
+<ul>
+  <li>Import the data into Python;</li>
+  <li>Explore the data by visualizing the first rows and the columns of it (the function <code class="language-plaintext highlighter-rouge">data.head()</code> from pandas can be useful), or alternatively, use the data documentation on <a href="https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014">www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014</a>;</li>
+  <li>Create a new column, <code class="language-plaintext highlighter-rouge">total_date</code>, representing each date into an increasing number, the days since the beginning of the data collection;</li>
+  <li>Plot the number of birth with respect to <code class="language-plaintext highlighter-rouge">total_date</code> to visualize the incremental number of birth during the years;</li>
+  <li><em>Optional:</em> Plot an barplot (<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html">matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html</a>) of the number of birth with respect to the day of the week and investigate if there are asymetries in the birth number in some days of the week.</li>
+</ul>
 
-\[Ax = y\]
-
-<p>This is not hard to do in <code class="language-plaintext highlighter-rouge">numpy</code>, since it implements a function <code class="language-plaintext highlighter-rouge">np.linalg.solve</code>, taking as input a 2-dimensional array <code class="language-plaintext highlighter-rouge">A</code> and a 1-dimensional array <code class="language-plaintext highlighter-rouge">y</code>, and returns the solution <code class="language-plaintext highlighter-rouge">x</code> to the linear system. In particular:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Generates the problem
-A = np.array([[1, 1, 1], [2, 1, 2], [0, 0, 1]])
-y = np.array([0, 1, 0])
-
-# Solve the system
-x_sol = np.linalg.solve(A, y)
-print(f"The solution is {x_sol}.")
-</code></pre></div></div>
-
-<h2 id="testing-the-accuracy">Testing the accuracy</h2>
-<p>You already studied that, when the matrix $A$ is ill-conditioned, the solution of a linear system won’t be correct, since the small perturbations on $y$ introduced by the floating point system will be amplified and the corresponding solution will be drammatically distant to the true solution. To check how accurate our computed solution is to the true solution of the system (i.e. to quantify the amplification of the perturbation on the data), it is common to use the relative error, which is defined as</p>
-
-\[E(x_{true}, x) = \frac{|| x_{true} - x ||_2}{|| x_{true} ||_2}\]
-
-<p>Clearly, the problem is that if our algorithm fails in recovering the true solution due to the ill-conditioning of the system matrix $A$, how can we compute the true solution $x_{true}$, required to compute $E(x_{true}, x)$? The solution is to build a <strong>test problem</strong>.</p>
-
-<h3 id="creating-a-test-problem">Creating a Test Problem</h3>
-<p>Consider a matrix $A \in \mathbb{R}^{n \times n}$ and assume we want to test the accuracy of an algorithm solving systems involving $A$. Fix an $n$-dimensional vector $x_{true} \in \mathbb{R}^n$, and compute $b = Ax_{true}$. Clearly, this procedure defines a linear system</p>
-
-\[Ax = b\]
-
-<p>of which we know that $x_{true}$ is a solution, since we built the term $b$ accordingly. Now, when we apply our algorithm to that linear system, we get a solution $x_{sol}$, approximately solving $Ax = b$. Given that, we can always compute the relative error $E(x_{true}, x_{sol})$ asssociated to the solution obtained by the algorithm. In numpy, this can be simply done as</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
-
-# Setting up the dimension
-n = 10
-
-# Creating the test problem
-A = np.random.randn(n, n) # n x n random matrix
-x_true = np.ones((n, ))   # n-dimensional vector of ones
-
-b = A @ x_true # Compute the term b s.t. x_true is a sol.
-
-# Solving the system with numpy
-x_sol = np.solve(A, b)
-
-# Computing the accuracy
-E_rel = np.linalg.norm(x_true - x_sol, 2) / np.linalg.norm(x_true, 2)
-print(f"The relative error is {E_rel}")
-</code></pre></div></div>
-
-<h2 id="condition-number">Condition number</h2>
-<p>You should already know that the conditioning of an $n \times n$ matrix $A$ can be quantified by a term called <strong>condition number</strong> which, whenever $A$ is invertible, is defined as</p>
-
-\[k_p(A) = ||A||_p || A^{-1} ||_p\]
-
-<p>Where $p \geq 1$ idenfities the norm on which the condition number is computed.</p>
-
-<p>An invertible matrix $A$ is said to be ill-conditioned when its condition number grows exponentially with the dimension of the problem, $n$.</p>
-
-<p>The condition number is related to the accuracy of the computed solution of a linear system by the following inequality</p>
-
-\[\frac{|| \delta x ||}{||x||} \leq k(A) \Bigl( \frac{||\delta A||}{|| A ||} + \frac{|| \delta b ||}{|| b ||} \Bigr)\]
-
-<p>which implies that the relative error on the computed solution is big whenever $k(A)$ is big. Moreover, note that as a consequence of the formula above, the accuracy of a computed solution is partially a proprierty of the condition number of $A$ itself, meaning that <em>no algorithm</em> is able to compute an accurate solution to an ill-conditioned system.</p>
-
-<p>Computing the $p$-condition number of a matrix $A$ in Numpy is trivial, just use the function <code class="language-plaintext highlighter-rouge">np.linalg.cond(A, p)</code> to compute $k_p(A)$.</p>
-
-<h2 id="homework">Homework</h2>
-<p>Please refer to the <a href="https://virtuale.unibo.it/pluginfile.php/1364076/mod_resource/content/1/homework1.pdf">Homework PDF</a> on Virtuale.</p>]]></content><author><name>Davide Evangelista</name></author><category term="jekyll" /><category term="update" /><category term="featured" /><summary type="html"><![CDATA[Table of Contents Introduction Testing the Accuracy Condition Number Homework]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/data_science.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/data_science.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Introduction to Python for Numerical Linear Algebra</title><link href="http://localhost:4000/jekyll/update/2022/09/16/introduction_to_python_numpy.html" rel="alternate" type="text/html" title="Introduction to Python for Numerical Linear Algebra" /><published>2022-09-16T08:00:00+02:00</published><updated>2022-09-16T08:00:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/16/introduction_to_python_numpy</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/16/introduction_to_python_numpy.html"><![CDATA[<!-- for pyscript -->
-<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-
-<script defer="" src="https://pyscript.net/latest/pyscript.js"></script>
-
-<hr />
+<h2 id="going-on">Going on</h2>
+<p>The next topic will be <a href="/jekyll/update/2022/09/17/linear_systems.html">linear systems</a>.</p>]]></content><author><name>Davide Evangelista</name></author><category term="jekyll" /><category term="update" /><category term="featured" /><summary type="html"><![CDATA[Table of contents Plotting Customize the Plot Multiplot and Line customization Subplots Plotting data Going on]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/matplotlib_header.png" /><media:content medium="image" url="http://localhost:4000/assets/images/matplotlib_header.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Introduction to Python for Numerical Linear Algebra</title><link href="http://localhost:4000/jekyll/update/2022/09/16/introduction_to_python_numpy.html" rel="alternate" type="text/html" title="Introduction to Python for Numerical Linear Algebra" /><published>2022-09-16T08:00:00+02:00</published><updated>2022-09-16T08:00:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/16/introduction_to_python_numpy</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/16/introduction_to_python_numpy.html"><![CDATA[<hr />
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
   <li><a href="#introduction">Introduction</a></li>
@@ -281,6 +294,8 @@ print(f"The relative error is {E_rel}")
   <li><a href="#arrays-operations">Arrays Operations</a></li>
   <li><a href="#logic-operations-between-vectors">Logic Operations between vectors</a></li>
   <li><a href="#slicing">Slicing</a></li>
+  <li><a href="#matrix-and-vector-manipulation">Matrix and Vector Manipulation</a></li>
+  <li><a href="#read-data-with-pandas">Read data with pandas</a></li>
   <li><a href="#going-on">Going on</a></li>
 </ol>
 
@@ -364,7 +379,21 @@ print(a)
 Moreover, print its shape.</p>
 </blockquote>
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+    
+    <pre>
+import numpy as np
+
+# Define A
+A = np.array([[2, 1, 1], [1, 2, 1], [1, 1, 2]])
+
+# Print A and its shape
+print(A)
+print(f"Shape of A is: {A.shape}")
+    </pre>
+
+</details>
 
 <hr />
 
@@ -436,7 +465,29 @@ print(y1 + y2)
 \(e^{x_1} e^{x_2} = e^{x_1 + x_2}\)</p>
 </blockquote>
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+    
+    <pre>
+import numpy as np
+
+# Setup the dimensionality of the problem
+n = 10
+
+# Create x_1 and x_2
+x_1 = np.random.rand(n)
+x_2 = np.ones((n, ))
+
+# Compute e^x_1+x_2 and e^x1 e^x2
+e_x_1_x_2 = np.exp(x_1 + x_2)
+e_x_1_e_x_2 = np.exp(x_1) * np.exp(x_2)
+
+# Check equality
+print(f"e^x_1 * e^x_2 = {e_x_1_x_2}")
+print(f"e^x_1 + x_2 = {e_x_1_e_x_2}")
+    </pre>
+
+</details>
 
 <hr />
 <h2 id="logic-operations-between-vectors">Logic operations between vectors</h2>
@@ -482,7 +533,6 @@ print(y1 + y2)
 </table>
 
 <p><br /></p>
-<py-repl></py-repl>
 
 <hr />
 <h2 id="slicing">Slicing</h2>
@@ -543,7 +593,59 @@ B = A[:2, :2]
   <p><strong><em>Exercise:</em></strong> Create an $n \times n$ matrix $A$ of normally distributed values. Then, create a second matrix $B$ with the same shape of $A$ such that it is equal to $A$ when $a_{i, j}$ is positive, while it is equal to $0$ when $a_{i, j} &lt; 0$.</p>
 </blockquote>
 
-<py-repl></py-repl>
+<details>
+    <summary> Visualize the solution </summary>
+
+    <pre>
+import numpy as np
+
+# Setup the dimensionality of the problem
+n = 10
+
+# Create matrix A and B
+A = np.random.randn(n, n)
+
+B = A
+B[A&lt;0] = 0
+    </pre>
+
+</details>
+
+<h2 id="matrix-and-vector-manipulation">Matrix and Vector Manipulation</h2>
+<p>Numpy also implements the basic operations on matrix and vectors. In particular, the following functions can be useful in this course:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">np.linalg.norm(a, p)</code>: Computes the $p$-norm of a vector or a matrix $a$;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.linalg.cond(A, p)</code>: Computes the condition number in $p$-norm of a matrix $A$;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.linalg.matrix_rank(A)</code>: Computes the rank of the matrix $A$;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.linalg.inv(A)</code>: When invertible, compute the inverse matrix of $A$. <em>Warning:</em> Very slow;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.transpose(A)</code>: Compute the transpose matrix of $A$. It is equivalent to <code class="language-plaintext highlighter-rouge">A.T</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">np.reshape(a, new_shape)</code>: Reshape an array <code class="language-plaintext highlighter-rouge">a</code> to a given shape.</li>
+</ul>
+
+<h2 id="read-data-with-pandas">Read data with pandas</h2>
+<p>Since we will frequently work with data, it will be important to be able to manipulate them. In this class, we will learn how to load a dataset into Python by using a library called <code class="language-plaintext highlighter-rouge">pandas</code>, whose documentation can be found <a href="https://pandas.pydata.org/docs/user_guide/index.html#user-guide">here</a>.</p>
+
+<p>As an example, download the <a href="https://virtuale.unibo.it/mod/resource/view.php?id=1002928">data</a> from Virtuale, which is taken by Kaggle at the following link: <a href="https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014">www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014</a>.</p>
+
+<p>Then, place it in the same folder as the Python file on which you are working and use the following code to load it in memory.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pandas as pd
+
+# Read data from a csv file
+data = pd.read_csv('./data/US_births_2000-2014_SSA.csv')
+</code></pre></div></div>
+
+<p>Pandas uses similar function name as numpy to keep everything coherent. For example, we can check the shape of <code class="language-plaintext highlighter-rouge">data</code> by using the function <code class="language-plaintext highlighter-rouge">print(data.shape)</code>. Moreover, a pandas dataframe can be casted into a numpy array by simply</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+
+# Cast into numpy array
+np_data = np.array(data)
+
+# Check that the dimension didn't change
+print(f"{data.shape} should be equal to {np_data.shape}")
+</code></pre></div></div>
 
 <h2 id="going-on">Going on</h2>
-<p>An application of Numpy will be on <a href="/jekyll/update/2022/09/16/linear_systems.html">Linear Systems</a>. An introduction to plots in Python with matplotlib can be found <a href="/jekyll/update/2022/09/17/matplotlib.html">here</a>.</p>]]></content><author><name>Davide Evangelista</name></author><category term="jekyll" /><category term="update" /><category term="featured" /><summary type="html"><![CDATA[]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/numpy_logo.png" /><media:content medium="image" url="http://localhost:4000/assets/images/numpy_logo.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+<p>An application of Numpy will be on <a href="/jekyll/update/2022/09/17/linear_systems.html">Linear Systems</a>. An introduction to plots in Python with matplotlib can be found <a href="/jekyll/update/2022/09/16/matplotlib.html">here</a>.</p>]]></content><author><name>Davide Evangelista</name></author><category term="jekyll" /><category term="update" /><category term="featured" /><summary type="html"><![CDATA[Table of Contents Introduction Numpy and Numpy arrays Arrays Operations Logic Operations between vectors Slicing Matrix and Vector Manipulation Read data with pandas Going on]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/numpy_logo.png" /><media:content medium="image" url="http://localhost:4000/assets/images/numpy_logo.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

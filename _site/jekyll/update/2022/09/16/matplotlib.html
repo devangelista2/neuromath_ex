@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>Plotting with matplotlib</title>
-  <meta name="description" content="Table of contents  Plotting  Customize the Plot  Multiplot and Line customization  Subplots" />
+  <meta name="description" content="Table of contents  Plotting  Customize the Plot  Multiplot and Line customization  Subplots  Plotting data  Going on" />
 
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -20,14 +20,14 @@
   <meta property="og:site_name" content="NeuroMath" />
   <meta property="og:title" content="Plotting with matplotlib"/>
   
-  <meta property="og:description" content="Table of contents  Plotting  Customize the Plot  Multiplot and Line customization  Subplots" />
+  <meta property="og:description" content="Table of contents  Plotting  Customize the Plot  Multiplot and Line customization  Subplots  Plotting data  Going on" />
   
   <meta property="og:image" content="http://localhost:4000/assets/images/matplotlib_header.png" />
-  <meta property="og:url" content="http://localhost:4000/jekyll/update/2022/09/17/matplotlib.html" >
+  <meta property="og:url" content="http://localhost:4000/jekyll/update/2022/09/16/matplotlib.html" >
   <meta property="og:type" content="blog" />
-  <meta property="article:published_time" content="2022-09-17T10:00:00+02:00">
+  <meta property="article:published_time" content="2022-09-16T17:00:00+02:00">
 
-  <link rel="canonical" href="http://localhost:4000/jekyll/update/2022/09/17/matplotlib.html"/>
+  <link rel="canonical" href="http://localhost:4000/jekyll/update/2022/09/16/matplotlib.html"/>
   <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/png"/>
   <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -95,7 +95,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>Plotting with matplotlib</title>
-  <meta name="description" content="Table of contents  Plotting  Customize the Plot  Multiplot and Line customization  Subplots" />
+  <meta name="description" content="Table of contents  Plotting  Customize the Plot  Multiplot and Line customization  Subplots  Plotting data  Going on" />
 
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -106,14 +106,14 @@
   <meta property="og:site_name" content="NeuroMath" />
   <meta property="og:title" content="Plotting with matplotlib"/>
   
-  <meta property="og:description" content="Table of contents  Plotting  Customize the Plot  Multiplot and Line customization  Subplots" />
+  <meta property="og:description" content="Table of contents  Plotting  Customize the Plot  Multiplot and Line customization  Subplots  Plotting data  Going on" />
   
   <meta property="og:image" content="http://localhost:4000/assets/images/matplotlib_header.png" />
-  <meta property="og:url" content="http://localhost:4000/jekyll/update/2022/09/17/matplotlib.html" >
+  <meta property="og:url" content="http://localhost:4000/jekyll/update/2022/09/16/matplotlib.html" >
   <meta property="og:type" content="blog" />
-  <meta property="article:published_time" content="2022-09-17T10:00:00+02:00">
+  <meta property="article:published_time" content="2022-09-16T17:00:00+02:00">
 
-  <link rel="canonical" href="http://localhost:4000/jekyll/update/2022/09/17/matplotlib.html"/>
+  <link rel="canonical" href="http://localhost:4000/jekyll/update/2022/09/16/matplotlib.html"/>
   <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/png"/>
   <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -180,7 +180,7 @@
               <div class="author-image" style="background-image: url(/assets/images/author.png)">Blog Logo</div>
               <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">Davide Evangelista</h4>
               on
-              <time datetime="2022-09-17 10:00">17 Sep 2022</time>
+              <time datetime="2022-09-16 17:00">16 Sep 2022</time>
               <!-- , tagged on <span class="post-tag-">, <a href="/tag/"></a></span> -->
             </div>
             <div style="text-align:center">
@@ -201,6 +201,8 @@
   <li><a href="#customize-the-plot">Customize the Plot</a></li>
   <li><a href="#multiplot-and-line-customization">Multiplot and Line customization</a></li>
   <li><a href="#subplots">Subplots</a></li>
+  <li><a href="#plotting-data">Plotting data</a></li>
+  <li><a href="#going-on">Going on</a></li>
 </ol>
 
 <hr />
@@ -385,6 +387,22 @@ plt.show()
 
 <p><img src="/assets/images/matplotlib_tutorial/plot_5.png" alt="" /></p>
 
+<h2 id="exercise-plotting-data">Exercise: Plotting data</h2>
+<p>Going back to the example in the <a href="/jekyll/update/2022/09/16/introduction_to_python_numpy.html">introductory post</a> on Numpy where we introduced the library pandas, useful to read data into Python, we can now use matplotlib to visualize it.</p>
+
+<p>First of all, download (if required) the <a href="https://virtuale.unibo.it/mod/resource/view.php?id=1002928">data</a> from Virtuale or equivalently by Kaggle at the following link: <a href="https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014">www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014</a>, and place the <em>.csv</em> file into the same folder of your <code class="language-plaintext highlighter-rouge">.py</code> file. Then, with the help of what you studied in the <a href="/jekyll/update/2022/09/16/introduction_to_python_numpy.html">introductory post</a>,</p>
+
+<ul>
+  <li>Import the data into Python;</li>
+  <li>Explore the data by visualizing the first rows and the columns of it (the function <code class="language-plaintext highlighter-rouge">data.head()</code> from pandas can be useful), or alternatively, use the data documentation on <a href="https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014">www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014</a>;</li>
+  <li>Create a new column, <code class="language-plaintext highlighter-rouge">total_date</code>, representing each date into an increasing number, the days since the beginning of the data collection;</li>
+  <li>Plot the number of birth with respect to <code class="language-plaintext highlighter-rouge">total_date</code> to visualize the incremental number of birth during the years;</li>
+  <li><em>Optional:</em> Plot an barplot (<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html">matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html</a>) of the number of birth with respect to the day of the week and investigate if there are asymetries in the birth number in some days of the week.</li>
+</ul>
+
+<h2 id="going-on">Going on</h2>
+<p>The next topic will be <a href="/jekyll/update/2022/09/17/linear_systems.html">linear systems</a>.</p>
+
         </section>
         <footer class="post-footer">
           <section class="share">
@@ -399,7 +417,7 @@ plt.show()
               <h4>Davide Evangelista</h4>
               <p class="bio"></p>
               <hr>
-              <p class="published">Published <time datetime="2022-09-17 10:00">17 Sep 2022</time></p>
+              <p class="published">Published <time datetime="2022-09-16 17:00">16 Sep 2022</time></p>
             </section>
           </div>
           

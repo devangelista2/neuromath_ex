@@ -1,10 +1,12 @@
-I"D&<hr />
+I"8/<hr />
 <h2 id="table-of-contents">Table of contents</h2>
 <ol>
   <li><a href="#plotting">Plotting</a></li>
   <li><a href="#customize-the-plot">Customize the Plot</a></li>
   <li><a href="#multiplot-and-line-customization">Multiplot and Line customization</a></li>
   <li><a href="#subplots">Subplots</a></li>
+  <li><a href="#plotting-data">Plotting data</a></li>
+  <li><a href="#going-on">Going on</a></li>
 </ol>
 
 <hr />
@@ -188,4 +190,20 @@ plt.show()
 </code></pre></div></div>
 
 <p><img src="/assets/images/matplotlib_tutorial/plot_5.png" alt="" /></p>
+
+<h2 id="exercise-plotting-data">Exercise: Plotting data</h2>
+<p>Going back to the example in the <a href="/jekyll/update/2022/09/16/introduction_to_python_numpy.html">introductory post</a> on Numpy where we introduced the library pandas, useful to read data into Python, we can now use matplotlib to visualize it.</p>
+
+<p>First of all, download (if required) the <a href="https://virtuale.unibo.it/mod/resource/view.php?id=1002928">data</a> from Virtuale or equivalently by Kaggle at the following link: <a href="https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014">www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014</a>, and place the <em>.csv</em> file into the same folder of your <code class="language-plaintext highlighter-rouge">.py</code> file. Then, with the help of what you studied in the <a href="/jekyll/update/2022/09/16/introduction_to_python_numpy.html">introductory post</a>,</p>
+
+<ul>
+  <li>Import the data into Python;</li>
+  <li>Explore the data by visualizing the first rows and the columns of it (the function <code class="language-plaintext highlighter-rouge">data.head()</code> from pandas can be useful), or alternatively, use the data documentation on <a href="https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014">www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014</a>;</li>
+  <li>Create a new column, <code class="language-plaintext highlighter-rouge">total_date</code>, representing each date into an increasing number, the days since the beginning of the data collection;</li>
+  <li>Plot the number of birth with respect to <code class="language-plaintext highlighter-rouge">total_date</code> to visualize the incremental number of birth during the years;</li>
+  <li><em>Optional:</em> Plot an barplot (<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html">matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html</a>) of the number of birth with respect to the day of the week and investigate if there are asymetries in the birth number in some days of the week.</li>
+</ul>
+
+<h2 id="going-on">Going on</h2>
+<p>The next topic will be <a href="/jekyll/update/2022/09/16/linear_systems.html">linear systems</a>.</p>
 :ET

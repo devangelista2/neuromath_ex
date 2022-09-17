@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Plotting with matplotlib"
-date: 2022-09-17 10:00
+date: 2022-09-16 17:00
 categories: jekyll update
 tags: featured
 image: /assets/images/matplotlib_header.png
@@ -14,6 +14,8 @@ mathjax: true
 2. [Customize the Plot](#customize-the-plot)
 3. [Multiplot and Line customization](#multiplot-and-line-customization)
 4. [Subplots](#subplots)
+5. [Plotting data](#plotting-data)
+6. [Going on](#going-on)
 
 ---
 
@@ -195,3 +197,17 @@ plt.show()
 ```
 
 ![](/assets/images/matplotlib_tutorial/plot_5.png)
+
+## Exercise: Plotting data
+Going back to the example in the [introductory post]({% post_url 2022-09-16-introduction_to_python_numpy %}) on Numpy where we introduced the library pandas, useful to read data into Python, we can now use matplotlib to visualize it.
+
+First of all, download (if required) the [data](https://virtuale.unibo.it/mod/resource/view.php?id=1002928) from Virtuale or equivalently by Kaggle at the following link: [www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014](https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014), and place the _.csv_ file into the same folder of your `.py` file. Then, with the help of what you studied in the [introductory post]({% post_url 2022-09-16-introduction_to_python_numpy %}),
+
+* Import the data into Python;
+* Explore the data by visualizing the first rows and the columns of it (the function `data.head()` from pandas can be useful), or alternatively, use the data documentation on [www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014](https://www.kaggle.com/mysarahmadbhat/us-births-2000-to-2014);
+* Create a new column, `total_date`, representing each date into an increasing number, the days since the beginning of the data collection;
+* Plot the number of birth with respect to `total_date` to visualize the incremental number of birth during the years;
+* _Optional:_ Plot an barplot ([matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html)) of the number of birth with respect to the day of the week and investigate if there are asymetries in the birth number in some days of the week. 
+
+## Going on
+The next topic will be [linear systems]({% post_url 2022-09-17-linear_systems %}).
