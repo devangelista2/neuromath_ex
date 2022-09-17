@@ -12,11 +12,18 @@ mathjax: true
 <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 
-<py-env>
-- matplotlib
-- numpy
-</py-env>
+---
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Numpy and Numpy arrays](#numpy-and-numpy-arrays)
+3. [Arrays Operations](#arrays-operations)
+4. [Logic Operations between vectors](#logic-operations-between-vectors)
+5. [Slicing](#slicing)
+6. [Going on](#going-on)
 
+---
+
+## Introduction
 Numerical Linear Algebra (NLA) is the study of how matrix operations can be used to create computer algorithms which efficiently and accurately provide approximate answers to questions in continuous mathematics. 
 
 Consequently, it is mandatory to be able to efficiently implement matrix operations, i.e. operations regarding matrices (that we will represent with uppercase letters $A, B, \dots$) and vectors (that we will represent with lowercase letters $v, w, \dots$). The main library in Python implementing all the main NLA operations is `numpy`. 
@@ -253,4 +260,4 @@ B = A[:2, :2]
 <py-repl></py-repl>
 
 ## Going on
-An application of Numpy will be on [Linear Systems]({% post_url 2022-09-16-linear_systems %}).
+An application of Numpy will be on [Linear Systems]({% post_url 2022-09-16-linear_systems %}). An introduction to plots in Python with matplotlib can be found [here]({% post_url 2022-09-17-matplotlib %}).

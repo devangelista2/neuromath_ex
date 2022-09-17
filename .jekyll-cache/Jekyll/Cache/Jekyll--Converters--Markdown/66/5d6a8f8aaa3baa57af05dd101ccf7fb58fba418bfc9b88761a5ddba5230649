@@ -1,0 +1,191 @@
+I"D&<hr />
+<h2 id="table-of-contents">Table of contents</h2>
+<ol>
+  <li><a href="#plotting">Plotting</a></li>
+  <li><a href="#customize-the-plot">Customize the Plot</a></li>
+  <li><a href="#multiplot-and-line-customization">Multiplot and Line customization</a></li>
+  <li><a href="#subplots">Subplots</a></li>
+</ol>
+
+<hr />
+
+<h2 id="plotting">Plotting</h2>
+<p>Visualization in Python can be performed by a famous library named <code class="language-plaintext highlighter-rouge">matplotlib</code>, in particular its sub-package <code class="language-plaintext highlighter-rouge">matplotlib.pyplot</code>. Documentation can be found at <a href="https://matplotlib.org/">matplotlib.org</a>.</p>
+
+<p>Plotting in matplotlib is very easy. Given two $N$-dimensional vectors $x = (x_1, \dots, x_N)$ and $y = (y_1, \dots, y_N)$, containing the $N$ datapoints we want to represent, the function <code class="language-plaintext highlighter-rouge">plot(x, y)</code> will plot on the plate each couple $(x_i, y_i)$ for $i = 1, \dots, N$, and will connect (by default) them with a line. Such a plot can be visualized by calling the function <code class="language-plaintext highlighter-rouge">show()</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+import matplotlib.pyplot as plt
+
+# Creating two vectors
+a = 0
+b = 2*np.pi
+N = 50
+
+x = np.linspace(a, b, N)
+y = np.sin(x)
+
+# Visualize
+plt.plot(x, y)
+plt.show()
+</code></pre></div></div>
+
+<p><img src="/assets/images/matplotlib_tutorial/plot_1.png" alt="" /></p>
+
+<p>As you can see, the code above will plot the sine function. We now want to see how we can change the aesthetic of this plot, by adding title, axis grid, axis label, …</p>
+
+<h2 id="customize-the-plot">Customize the plot</h2>
+<p>In matplotlib, most of the customization we want to add to the plot must be inserted in between the line <code class="language-plaintext highlighter-rouge">plt.plot(x, y)</code> and the line <code class="language-plaintext highlighter-rouge">plt.show()</code>. The most common customization functions are:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">plt.title(str)</code>: Add a title to the plot;</li>
+  <li><code class="language-plaintext highlighter-rouge">plt.xlabel(str)</code>: Add a label to the x-axis;</li>
+  <li><code class="language-plaintext highlighter-rouge">plt.ylabel(str)</code>: Add a label to the y-axis;</li>
+  <li><code class="language-plaintext highlighter-rouge">plt.grid()</code>: Add an axis grid on the background of the plot;</li>
+  <li><code class="language-plaintext highlighter-rouge">plt.xlim([a, b])</code>: Force the horizontal limit of the axis to be <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">plt.ylim([a, b])</code>: Force the vertical limit of the axis to be <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code>;</li>
+</ul>
+
+<p>For example, we can customize the plot above to obtain something like that</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+import matplotlib.pyplot as plt
+
+# Creating two vectors
+a = 0
+b = 2*np.pi
+N = 50
+
+x = np.linspace(a, b, N)
+y = np.sin(x)
+
+# Visualize
+plt.plot(x, y)
+plt.title('A plot of f(x) = sin(x)')
+plt.xlabel('x')
+plt.ylabel('y = sin(x)')
+plt.grid()
+plt.show()
+</code></pre></div></div>
+
+<p><img src="/assets/images/matplotlib_tutorial/plot_2.png" alt="" /></p>
+
+<h2 id="multiplot-and-line-customization">Multiplot and Line customization</h2>
+<p>Clearly, it is also possible to plot more than one line at the same time. Simply define others $x’, y’ \in \mathbb{R}^N$ containg the new data we want to plot and add another <code class="language-plaintext highlighter-rouge">plt.plot(x', y')</code> in between <code class="language-plaintext highlighter-rouge">plt.plot(x, y)</code> and <code class="language-plaintext highlighter-rouge">plt.show()</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+import matplotlib.pyplot as plt
+
+# Creating two vectors
+a = 0
+b = 2*np.pi
+N = 50
+
+x = np.linspace(a, b, N)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+
+# Visualize
+plt.plot(x, y1)
+plt.plot(x, y2)
+plt.title('A plot of trig. functions.')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend(['f(x) = sin(x)', 'f(x) = cos(x)'])
+plt.grid()
+plt.show()
+</code></pre></div></div>
+
+<p><img src="/assets/images/matplotlib_tutorial/plot_3.png" alt="" /></p>
+
+<p>As you can see, in the bottom-left of the plot, we also printed out a <code class="language-plaintext highlighter-rouge">legend</code>. Following the code above, it is easy to understand that a legend can be simply introduced by listing the name of the lines, ordered with respect to the ordering of the <code class="language-plaintext highlighter-rouge">plt.plot()</code> functions. Matplotlib will visualize the correct color of the line accordingly.</p>
+
+<p>Clearly, we can also modify the line specifications such as the color, the thickness and the style. To to that, we have to insert the following specifications inside of the corresponding <code class="language-plaintext highlighter-rouge">plt.plot()</code> line.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">color='str'</code>: Change the color of the line. A list of all the available colors can be found <a href="https://matplotlib.org/stable/gallery/color/named_colors.html">here</a>;</li>
+  <li><code class="language-plaintext highlighter-rouge">linewidth=int</code>: Change the thickness of the line.</li>
+</ul>
+
+<p>Moreover, the style of the line can be modified by adding some specifications just after the <code class="language-plaintext highlighter-rouge">y</code> input. For example,</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">"o"</code>: Changes the linestyle to rounded markers;</li>
+  <li><code class="language-plaintext highlighter-rouge">"--"</code>: Changes the linestyle to be dotted lines;</li>
+  <li><code class="language-plaintext highlighter-rouge">"o-"</code>: Changes the linestyle to be a continuous line with markers on the points defined by <code class="language-plaintext highlighter-rouge">(x, y)</code>.</li>
+</ul>
+
+<p>A complete list of all the possible linestyles can be found <a href="https://matplotlib.org/2.1.2/api/_as_gen/matplotlib.pyplot.plot.html">here</a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+import matplotlib.pyplot as plt
+
+# Creating two vectors
+a = 0
+b = 2*np.pi
+N = 50
+
+x = np.linspace(a, b, N)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+
+# Visualize
+plt.plot(x, y1, 'o', color='red')
+plt.plot(x, y2, '--', color='k', linewidth=2)
+plt.title('A plot of trig. functions.')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend(['f(x) = sin(x)', 'f(x) = cos(x)'])
+plt.grid()
+plt.show()
+</code></pre></div></div>
+
+<p><img src="/assets/images/matplotlib_tutorial/plot_4.png" alt="" /></p>
+
+<h2 id="subplots">Subplots</h2>
+<p>Subplots are required to create a matrix of plots inside of the same figure, which can be very useful for various visualizations.</p>
+
+<p>A subplot is created by first defining a <code class="language-plaintext highlighter-rouge">figure</code>. This can be done by the line <code class="language-plaintext highlighter-rouge">plt.figure(figsize=(w, h))</code> where the <code class="language-plaintext highlighter-rouge">figsize</code> argument is required to change the proportion of the resulting plot. After that, it is possible to open a subplot with the command <code class="language-plaintext highlighter-rouge">plt.subplot(nrow, ncol, idx)</code>, where <code class="language-plaintext highlighter-rouge">nrow</code> and <code class="language-plaintext highlighter-rouge">ncol</code> represents the number of images per rows and the number of images per columns in our matrix of plots, while <code class="language-plaintext highlighter-rouge">idx</code> is an incremental value, starting from 1, that indicate where the plot we are going to do should be placed inside of the matrix. <code class="language-plaintext highlighter-rouge">idx=1</code> represents the upper-left corner and, while increasing, it moves the image from left to right and from up to down into the matrix.</p>
+
+<p>Each time we want to open a different plot in our subplot, we have to specify the command <code class="language-plaintext highlighter-rouge">plt.subplot(nrow, ncol, idx)</code> again, with the same <code class="language-plaintext highlighter-rouge">nrow</code> and <code class="language-plaintext highlighter-rouge">ncol</code> argument, but different <code class="language-plaintext highlighter-rouge">idx</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import numpy as np
+import matplotlib.pyplot as plt
+
+# Creating data
+N = 200
+
+x1 = np.random.normal(0, 1, (N, ))
+y1 = np.random.normal(0, 1, (N, ))
+
+x2 = np.random.normal(0, 0.5, (N, ))
+y2 = np.random.normal(0, 2, (N, ))
+
+
+# Visualize
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 2, 1)
+plt.plot(x1, y1, 'o', color='red')
+plt.title('Normal distribution')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.xlim([-3, 3])
+plt.ylim([-4, 4])
+plt.grid()
+
+plt.subplot(1, 2, 2)
+plt.plot(x2, y2, 'o', color='k')
+plt.title('Vertical Oriented Gaussian distribution')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.xlim([-3, 3])
+plt.ylim([-4, 4])
+plt.grid()
+
+plt.show()
+</code></pre></div></div>
+
+<p><img src="/assets/images/matplotlib_tutorial/plot_5.png" alt="" /></p>
+:ET

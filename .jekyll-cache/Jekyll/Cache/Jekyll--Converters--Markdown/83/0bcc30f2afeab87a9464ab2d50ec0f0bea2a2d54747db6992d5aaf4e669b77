@@ -1,13 +1,22 @@
-I"iD<!-- for pyscript -->
+I"ŸF<!-- for pyscript -->
 <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 
 <script defer="" src="https://pyscript.net/latest/pyscript.js"></script>
 
-<py-env>
-- matplotlib
-- numpy
-</py-env>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#numpy-and-numpy-arrays">Numpy and Numpy arrays</a></li>
+  <li><a href="#arrays-operations">Arrays Operations</a></li>
+  <li><a href="#logic-operations-between-vectors">Logic Operations between vectors</a></li>
+  <li><a href="#slicing">Slicing</a></li>
+  <li><a href="#going-on">Going on</a></li>
+</ol>
 
+<hr />
+
+<h2 id="introduction">Introduction</h2>
 <p>Numerical Linear Algebra (NLA) is the study of how matrix operations can be used to create computer algorithms which efficiently and accurately provide approximate answers to questions in continuous mathematics.</p>
 
 <p>Consequently, it is mandatory to be able to efficiently implement matrix operations, i.e. operations regarding matrices (that we will represent with uppercase letters $A, B, \dots$) and vectors (that we will represent with lowercase letters $v, w, \dots$). The main library in Python implementing all the main NLA operations is <code class="language-plaintext highlighter-rouge">numpy</code>.</p>
@@ -267,5 +276,5 @@ B = A[:2, :2]
 <py-repl></py-repl>
 
 <h2 id="going-on">Going on</h2>
-<p>An application of Numpy will be on <a href="/jekyll/update/2022/09/16/linear_systems.html">Linear Systems</a>.</p>
+<p>An application of Numpy will be on <a href="/jekyll/update/2022/09/16/linear_systems.html">Linear Systems</a>. An introduction to plots in Python with matplotlib can be found <a href="/jekyll/update/2022/09/17/matplotlib.html">here</a>.</p>
 :ET
