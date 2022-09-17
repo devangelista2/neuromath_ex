@@ -31,4 +31,4 @@ print(f"The solution is {x_sol}.")
 You already studied that, when the matrix $A$ is ill-conditioned, the solution of a linear system won't be correct, since the small perturbations on $y$ introduced by the floating point system will be amplified and the corresponding solution will be drammatically distant to the true solution. 
 
 ## Homework
-Please refer to the [Homework PDF]({{ site.url }}/_download/homework1.pdf).
+Please refer to the [Homework PDF]({{ "/_download/homework1.pdf" | prepend: site.baseurl }}).
