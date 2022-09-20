@@ -52,10 +52,10 @@ $$
 Clearly, the problem is that if our algorithm fails in recovering the true solution due to the ill-conditioning of the system matrix $A$, how can we compute the true solution $x_{true}$, required to compute $E(x_{true}, x)$? The solution is to build a **test problem**.
 
 ### Creating a Test Problem
-Consider a matrix $A \in \mathbb{R}^{n \times n}$ and assume we want to test the accuracy of an algorithm solving systems involving $A$. Fix an $n$-dimensional vector $x_{true} \in \mathbb{R}^n$, and compute $b = Ax_{true}$. Clearly, this procedure defines a linear system
+Consider a matrix $A \in \mathbb{R}^{n \times n}$ and assume we want to test the accuracy of an algorithm solving systems involving $A$. Fix an $n$-dimensional vector $x_{true} \in \mathbb{R}^n$, and compute $y = Ax_{true}$. Clearly, this procedure defines a linear system
 
 $$
-    Ax = b
+    Ax = y
 $$
 
 of which we know that $x_{true}$ is a solution, since we built the term $b$ accordingly. Now, when we apply our algorithm to that linear system, we get a solution $x_{sol}$, approximately solving $Ax = b$. Given that, we can always compute the relative error $E(x_{true}, x_{sol})$ asssociated to the solution obtained by the algorithm. In numpy, this can be simply done as
@@ -70,10 +70,10 @@ n = 10
 A = np.random.randn(n, n) # n x n random matrix
 x_true = np.ones((n, ))   # n-dimensional vector of ones
 
-b = A @ x_true # Compute the term b s.t. x_true is a sol.
+y = A @ x_true # Compute the term y s.t. x_true is a sol.
 
 # Solving the system with numpy
-x_sol = np.solve(A, b)
+x_sol = np.solve(A, y)
 
 # Computing the accuracy
 E_rel = np.linalg.norm(x_true - x_sol, 2) / np.linalg.norm(x_true, 2)
@@ -94,7 +94,7 @@ An invertible matrix $A$ is said to be ill-conditioned when its condition number
 The condition number is related to the accuracy of the computed solution of a linear system by the following inequality
 
 $$
-    \frac{|| \delta x ||}{||x||} \leq k(A) \Bigl( \frac{||\delta A||}{|| A ||} + \frac{|| \delta b ||}{|| b ||} \Bigr)
+    \frac{|| \delta x ||}{||x||} \leq k(A) \Bigl( \frac{||\delta A||}{|| A ||} + \frac{|| \delta y ||}{|| y ||} \Bigr)
 $$
 
 which implies that the relative error on the computed solution is big whenever $k(A)$ is big. Moreover, note that as a consequence of the formula above, the accuracy of a computed solution is partially a proprierty of the condition number of $A$ itself, meaning that _no algorithm_ is able to compute an accurate solution to an ill-conditioned system.
@@ -102,7 +102,7 @@ which implies that the relative error on the computed solution is big whenever $
 Computing the $p$-condition number of a matrix $A$ in Numpy is trivial, just use the function `np.linalg.cond(A, p)` to compute $k_p(A)$.
 
 ## Solving Linear System by Matrix Splitting
-As you should know, when the matrix $A$ is unstructured, the linear system $Ax = b$ can be efficiently solved by using [LU Decomposition](https://en.wikipedia.org/wiki/LU_decomposition). In particular, with Gaussian elimination algorithm, one can factorize any non-singular matrix $A \in \mathbb{R}^{n \times n}$ into:
+As you should know, when the matrix $A$ is unstructured, the linear system $Ax = y$ can be efficiently solved by using [LU Decomposition](https://en.wikipedia.org/wiki/LU_decomposition). In particular, with Gaussian elimination algorithm, one can factorize any non-singular matrix $A \in \mathbb{R}^{n \times n}$ into:
 
 $$
     PA = LU
