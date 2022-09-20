@@ -3,8 +3,6 @@ layout: page
 title: About
 permalink: /about/
 ---
-Hello everyone,
-
 My name is Davide Evangelista, I'm a Math PhD student at University of Bologna, with strong research interests in developing Machine Learning algorithms to solve Inverse Problems often appearing in imaging (everything will become clearer by following the posts I will pubblish). 
 
 As a math student, I'm not only interested in developing highly accurate working algorithm, but I also try to mathematically understand what is going on during the process.
