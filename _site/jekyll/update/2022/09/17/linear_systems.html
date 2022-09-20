@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>Linear Systems with Numpy and Scipy</title>
-  <meta name="description" content="Table of Contents  Introduction  Testing the Accuracy  Condition Number  Homework" />
+  <meta name="description" content="Table of Contents  Table of Contents  Introduction  Testing the accuracy          Creating a Test Problem        Condition number  Solving Linear System by Matrix Splitting  Homework" />
 
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -20,7 +20,7 @@
   <meta property="og:site_name" content="NeuroMath" />
   <meta property="og:title" content="Linear Systems with Numpy and Scipy"/>
   
-  <meta property="og:description" content="Table of Contents  Introduction  Testing the Accuracy  Condition Number  Homework" />
+  <meta property="og:description" content="Table of Contents  Table of Contents  Introduction  Testing the accuracy          Creating a Test Problem        Condition number  Solving Linear System by Matrix Splitting  Homework" />
   
   <meta property="og:image" content="http://localhost:4000/assets/images/data_science.jpg" />
   <meta property="og:url" content="http://localhost:4000/jekyll/update/2022/09/17/linear_systems.html" >
@@ -95,7 +95,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>Linear Systems with Numpy and Scipy</title>
-  <meta name="description" content="Table of Contents  Introduction  Testing the Accuracy  Condition Number  Homework" />
+  <meta name="description" content="Table of Contents  Table of Contents  Introduction  Testing the accuracy          Creating a Test Problem        Condition number  Solving Linear System by Matrix Splitting  Homework" />
 
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -106,7 +106,7 @@
   <meta property="og:site_name" content="NeuroMath" />
   <meta property="og:title" content="Linear Systems with Numpy and Scipy"/>
   
-  <meta property="og:description" content="Table of Contents  Introduction  Testing the Accuracy  Condition Number  Homework" />
+  <meta property="og:description" content="Table of Contents  Table of Contents  Introduction  Testing the accuracy          Creating a Test Problem        Condition number  Solving Linear System by Matrix Splitting  Homework" />
   
   <meta property="og:image" content="http://localhost:4000/assets/images/data_science.jpg" />
   <meta property="og:url" content="http://localhost:4000/jekyll/update/2022/09/17/linear_systems.html" >
@@ -196,12 +196,19 @@
           <a name="topofpage"></a>
           <hr />
 <h2 id="table-of-contents">Table of Contents</h2>
-<ol>
+<!-- no toc -->
+<ul>
+  <li><a href="#table-of-contents">Table of Contents</a></li>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#testing-the-accuracy">Testing the Accuracy</a></li>
-  <li><a href="#condition-number">Condition Number</a></li>
+  <li><a href="#testing-the-accuracy">Testing the accuracy</a>
+    <ul>
+      <li><a href="#creating-a-test-problem">Creating a Test Problem</a></li>
+    </ul>
+  </li>
+  <li><a href="#condition-number">Condition number</a></li>
+  <li><a href="#solving-linear-system-by-matrix-splitting">Solving Linear System by Matrix Splitting</a></li>
   <li><a href="#homework">Homework</a></li>
-</ol>
+</ul>
 
 <hr />
 
@@ -272,6 +279,57 @@ print(f"The relative error is {E_rel}")
 <p>which implies that the relative error on the computed solution is big whenever $k(A)$ is big. Moreover, note that as a consequence of the formula above, the accuracy of a computed solution is partially a proprierty of the condition number of $A$ itself, meaning that <em>no algorithm</em> is able to compute an accurate solution to an ill-conditioned system.</p>
 
 <p>Computing the $p$-condition number of a matrix $A$ in Numpy is trivial, just use the function <code class="language-plaintext highlighter-rouge">np.linalg.cond(A, p)</code> to compute $k_p(A)$.</p>
+
+<h2 id="solving-linear-system-by-matrix-splitting">Solving Linear System by Matrix Splitting</h2>
+<p>As you should know, when the matrix $A$ is unstructured, the linear system $Ax = b$ can be efficiently solved by using <a href="https://en.wikipedia.org/wiki/LU_decomposition">LU Decomposition</a>. In particular, with Gaussian elimination algorithm, one can factorize any non-singular matrix $A \in \mathbb{R}^{n \times n}$ into:</p>
+
+\[PA = LU\]
+
+<p>where $L \in \mathbb{R}^{n \times n}$ is a lower-triangular matrix, $U \in \mathbb{R}^{n \times n}$ is an upper-triangular matrix with all ones on the diagonal and $P \in \mathbb{R}^{n \times n}$ is a permutation matrix (i.e. a matrix obtained by permutating the rows of the identity matrix). If the decomposition is computed without pivoting, the permutation matrix equals the identity. Note that the assumption that $A$ is non-singular is not restrictive, since it is a necessary condition for the solvability of $Ax = y$.</p>
+
+<p>Since linear systems of the form</p>
+
+\[Lx = y \quad \text{ and } \quad Ux = y\]
+
+<p>can be efficiently solved by the Forward (Backward) substitution, and the computation of the LU factorization by Gaussian elimination is pretty fast ($O(n^3)$ floating point operations), we can use that to solve the former linear system.</p>
+
+<p>Indeed,</p>
+
+\[Ax = y \iff PAx = Py \iff LUx = Py\]
+
+<p>then, by Forward-Backward substitution, this system can be solved by subsequently solve</p>
+
+\[Lz = Py \quad \text{ then } \quad Ux = z\]
+
+<p>whose solution is a solution for $Ax = y$.</p>
+
+<p>Even if this procedure is automatically performed by the <code class="language-plaintext highlighter-rouge">np.linalg.solve</code> function, we can unroll it with the functions <code class="language-plaintext highlighter-rouge">scipy.linalg.lu(A)</code> and <code class="language-plaintext highlighter-rouge">scipy.linalg.solve_triangular(A, b)</code>, whose documentation can be found <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.lu.html">here</a> and <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_triangular.html">here</a>.</p>
+
+<blockquote>
+  <p><strong><em>Exercise:</em></strong> Write a function that takes as input a non-singular matrix $A \in \mathbb{R}^{n \times n}$ and a vector $y \in \mathbb{R}^n$ and returns the solution $x \in \mathbb{R}^n$ of $Ax = y$ without using <code class="language-plaintext highlighter-rouge">np.linalg.lu</code>.</p>
+</blockquote>
+
+<details>
+    <summary> Visualize the solution </summary>
+    
+    <pre>
+import numpy as np
+import scipy
+
+# Define a function that solves the system
+def solve(A, y):
+    # LU factorization of A
+    P, L, U = scipy.linalg.lu(A)
+
+    # Solve Lz = Py
+    z = scipy.linalg.solve_triangular(L, P@y)
+
+    # Solve Ux = z
+    x = scipy.linalg.solve_triangular(U, z)
+
+    return x
+    </pre>
+</details>
 
 <h2 id="homework">Homework</h2>
 <p>Please refer to the <a href="https://virtuale.unibo.it/pluginfile.php/1364076/mod_resource/content/1/homework1.pdf">Homework PDF</a> on Virtuale.</p>

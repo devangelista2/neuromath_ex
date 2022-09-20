@@ -1,0 +1,16 @@
+I"D<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<!-- no toc -->
+<ul>
+  <li><a href="#table-of-contents">Table of Contents</a></li>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#testing-the-accuracy">Testing the accuracy</a>
+    <ul>
+      <li><a href="#creating-a-test-problem">Creating a Test Problem</a></li>
+    </ul>
+  </li>
+  <li><a href="#condition-number">Condition number</a></li>
+  <li><a href="#solving-linear-system-by-matrix-splitting">Solving Linear System by Matrix Splitting</a></li>
+  <li><a href="#homework">Homework</a></li>
+</ul>
+:ET

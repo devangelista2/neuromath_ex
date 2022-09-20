@@ -10,10 +10,14 @@ mathjax: true
 
 ---
 ## Table of Contents
-1. [Introduction](#introduction)
-2. [Testing the Accuracy](#testing-the-accuracy)
-3. [Condition Number](#condition-number)
-4. [Homework](#homework)
+<!-- no toc -->
+- [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Testing the accuracy](#testing-the-accuracy)
+  - [Creating a Test Problem](#creating-a-test-problem)
+- [Condition number](#condition-number)
+- [Solving Linear System by Matrix Splitting](#solving-linear-system-by-matrix-splitting)
+- [Homework](#homework)
 
 ---
 
@@ -96,6 +100,63 @@ $$
 which implies that the relative error on the computed solution is big whenever $k(A)$ is big. Moreover, note that as a consequence of the formula above, the accuracy of a computed solution is partially a proprierty of the condition number of $A$ itself, meaning that _no algorithm_ is able to compute an accurate solution to an ill-conditioned system.
 
 Computing the $p$-condition number of a matrix $A$ in Numpy is trivial, just use the function `np.linalg.cond(A, p)` to compute $k_p(A)$.
+
+## Solving Linear System by Matrix Splitting
+As you should know, when the matrix $A$ is unstructured, the linear system $Ax = b$ can be efficiently solved by using [LU Decomposition](https://en.wikipedia.org/wiki/LU_decomposition). In particular, with Gaussian elimination algorithm, one can factorize any non-singular matrix $A \in \mathbb{R}^{n \times n}$ into:
+
+$$
+    PA = LU
+$$
+
+where $L \in \mathbb{R}^{n \times n}$ is a lower-triangular matrix, $U \in \mathbb{R}^{n \times n}$ is an upper-triangular matrix with all ones on the diagonal and $P \in \mathbb{R}^{n \times n}$ is a permutation matrix (i.e. a matrix obtained by permutating the rows of the identity matrix). If the decomposition is computed without pivoting, the permutation matrix equals the identity. Note that the assumption that $A$ is non-singular is not restrictive, since it is a necessary condition for the solvability of $Ax = y$. 
+
+Since linear systems of the form 
+
+$$
+    Lx = y \quad \text{ and } \quad Ux = y
+$$
+
+can be efficiently solved by the Forward (Backward) substitution, and the computation of the LU factorization by Gaussian elimination is pretty fast ($O(n^3)$ floating point operations), we can use that to solve the former linear system. 
+
+Indeed,
+
+$$
+    Ax = y \iff PAx = Py \iff LUx = Py
+$$
+
+then, by Forward-Backward substitution, this system can be solved by subsequently solve 
+
+$$
+    Lz = Py \quad \text{ then } \quad Ux = z
+$$
+
+whose solution is a solution for $Ax = y$.
+
+Even if this procedure is automatically performed by the `np.linalg.solve` function, we can unroll it with the functions `scipy.linalg.lu(A)` and `scipy.linalg.solve_triangular(A, b)`, whose documentation can be found [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.lu.html) and [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve_triangular.html).
+
+> **_Exercise:_** Write a function that takes as input a non-singular matrix $A \in \mathbb{R}^{n \times n}$ and a vector $y \in \mathbb{R}^n$ and returns the solution $x \in \mathbb{R}^n$ of $Ax = y$ without using `np.linalg.lu`.
+
+<details>
+    <summary> Visualize the solution </summary>
+    
+    <pre>
+import numpy as np
+import scipy
+
+# Define a function that solves the system
+def solve(A, y):
+    # LU factorization of A
+    P, L, U = scipy.linalg.lu(A)
+
+    # Solve Lz = Py
+    z = scipy.linalg.solve_triangular(L, P@y)
+
+    # Solve Ux = z
+    x = scipy.linalg.solve_triangular(U, z)
+
+    return x
+    </pre>
+</details>
 
 
 ## Homework

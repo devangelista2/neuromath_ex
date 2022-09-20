@@ -1,11 +1,12 @@
-I"š<hr />
+I"ë<hr />
 <h2 id="table-of-contents">Table of contents</h2>
-<ol>
+<ul>
+  <li><a href="#table-of-contents">Table of contents</a></li>
   <li><a href="#plotting">Plotting</a></li>
-  <li><a href="#customize-the-plot">Customize the Plot</a></li>
+  <li><a href="#customize-the-plot">Customize the plot</a></li>
   <li><a href="#multiplot-and-line-customization">Multiplot and Line customization</a></li>
   <li><a href="#subplots">Subplots</a></li>
-  <li><a href="#plotting-data">Plotting data</a></li>
+  <li><a href="#exercise-plotting-data">Exercise: Plotting data</a></li>
   <li><a href="#going-on">Going on</a></li>
-</ol>
+</ul>
 :ET

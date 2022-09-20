@@ -10,12 +10,13 @@ mathjax: true
 
 ---
 ## Table of contents
-1. [Plotting](#plotting)
-2. [Customize the Plot](#customize-the-plot)
-3. [Multiplot and Line customization](#multiplot-and-line-customization)
-4. [Subplots](#subplots)
-5. [Plotting data](#plotting-data)
-6. [Going on](#going-on)
+- [Table of contents](#table-of-contents)
+- [Plotting](#plotting)
+- [Customize the plot](#customize-the-plot)
+- [Multiplot and Line customization](#multiplot-and-line-customization)
+- [Subplots](#subplots)
+- [Exercise: Plotting data](#exercise-plotting-data)
+- [Going on](#going-on)
 
 ---
 

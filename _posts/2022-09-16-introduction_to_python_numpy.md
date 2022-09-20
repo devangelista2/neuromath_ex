@@ -10,14 +10,20 @@ mathjax: true
 
 ---
 ## Table of Contents
-1. [Introduction](#introduction)
-2. [Numpy and Numpy arrays](#numpy-and-numpy-arrays)
-3. [Arrays Operations](#arrays-operations)
-4. [Logic Operations between vectors](#logic-operations-between-vectors)
-5. [Slicing](#slicing)
-6. [Matrix and Vector Manipulation](#matrix-and-vector-manipulation)
-7. [Read data with pandas](#read-data-with-pandas)
-8. [Going on](#going-on)
+<!-- no toc -->
+- [Introduction](#introduction)
+  - [Documentation](#documentation)
+- [Numpy and Numpy Arrays](#numpy-and-numpy-arrays)
+  - [Creating a Numpy arrays](#creating-a-numpy-array) 
+  - [Other functions to create arrays](#other-functions-to-create-arrays)
+- [Arrays Operations](#arrays-operations)
+- [Logic operations between vectors](#logic-operations-between-vectors)
+- [Slicing](#slicing)
+  - [Slicing Matrices](#slicing-matrices)
+- [Matrix and Vector manipulation](#matrix-and-vector-manipulation)
+- [Read data with pandas](#read-data-with-pandas)
+- [Going on](#going-on)
+
 
 ---
 
