@@ -58,7 +58,7 @@ $$
     Ax = y
 $$
 
-of which we know that $x_{true}$ is a solution, since we built the term $b$ accordingly. Now, when we apply our algorithm to that linear system, we get a solution $x_{sol}$, approximately solving $Ax = b$. Given that, we can always compute the relative error $E(x_{true}, x_{sol})$ asssociated to the solution obtained by the algorithm. In numpy, this can be simply done as
+of which we know that $x_{true}$ is a solution, since we built the term $b$ accordingly. Now, when we apply our algorithm to that linear system, we get a solution $x_{sol}$, approximately solving $Ax = y$. Given that, we can always compute the relative error $E(x_{true}, x_{sol})$ asssociated to the solution obtained by the algorithm. In numpy, this can be simply done as
 
 ```
 import numpy as np
@@ -105,10 +105,16 @@ Computing the $p$-condition number of a matrix $A$ in Numpy is trivial, just use
 As you should know, when the matrix $A$ is unstructured, the linear system $Ax = y$ can be efficiently solved by using [LU Decomposition](https://en.wikipedia.org/wiki/LU_decomposition). In particular, with Gaussian elimination algorithm, one can factorize any non-singular matrix $A \in \mathbb{R}^{n \times n}$ into:
 
 $$
-    PA = LU
+    A = PLU
 $$
 
 where $L \in \mathbb{R}^{n \times n}$ is a lower-triangular matrix, $U \in \mathbb{R}^{n \times n}$ is an upper-triangular matrix with all ones on the diagonal and $P \in \mathbb{R}^{n \times n}$ is a permutation matrix (i.e. a matrix obtained by permutating the rows of the identity matrix). If the decomposition is computed without pivoting, the permutation matrix equals the identity. Note that the assumption that $A$ is non-singular is not restrictive, since it is a necessary condition for the solvability of $Ax = y$. 
+
+Since $P$ is an orthogonal matrix, $P^{-1} = P^T$, thus
+
+$$
+    A = PLU \iff P^T A = LU
+$$
 
 Since linear systems of the form 
 
@@ -121,13 +127,13 @@ can be efficiently solved by the Forward (Backward) substitution, and the comput
 Indeed,
 
 $$
-    Ax = y \iff PAx = Py \iff LUx = Py
+    Ax = y \iff P^TAx = P^Ty \iff LUx = P^Ty
 $$
 
 then, by Forward-Backward substitution, this system can be solved by subsequently solve 
 
 $$
-    Lz = Py \quad \text{ then } \quad Ux = z
+    Lz = P^Ty \quad \text{ then } \quad Ux = z
 $$
 
 whose solution is a solution for $Ax = y$.
@@ -148,8 +154,8 @@ def solve(A, y):
     # LU factorization of A
     P, L, U = scipy.linalg.lu(A)
 
-    # Solve Lz = Py
-    z = scipy.linalg.solve_triangular(L, P@y)
+    # Solve Lz = P.Ty
+    z = scipy.linalg.solve_triangular(L, P.T@y, lower=True)
 
     # Solve Ux = z
     x = scipy.linalg.solve_triangular(U, z)
