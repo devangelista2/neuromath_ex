@@ -1,0 +1,52 @@
+I"4<h2 id="dimensionality-reduction">Dimensionality Reduction</h2>
+<p>While working with data, it is common to have access to very high-dimensional unstructured informations (e.g. images, sounds, …). To work with them, it is necessary to find a way to project them into a low-dimensional space where data which is semantically similar is close. This approach is called <strong>dimensionality reduction</strong>.</p>
+
+<p>For example, assume our data can be stored in an $d \times N$ array,
+\(X = [ x^1 x^2 \dots x^N ] \in \mathbb{R}^{d \times N}\)
+where each datapoint $x^j \in \mathbb{R}^d$. The idea of dimensionality reduction techniques in ML is to find a projector operator $P: \mathbb{R}^d \to \mathbb{R}^k$, with $k \ll d$, such that in the projected space $P(x)$, images semantically similar are close together. If the points in a projected space forms isolated popoulations such that <em>inside</em> of each popoulation the points are close, while the distance <em>between</em> popoulations is large, we call them <strong>clusters</strong>. A clusering algorithm is an algorithm which is able to find clusters from high-dimensional data.</p>
+
+<h2 id="principal-component-analysis-pca">Principal Component Analysis (PCA)</h2>
+<p>Principal Componenti Analyisis (PCA) is probabily the simplest yet effective technique to perform dimensionality reduction and clustering. It is an unsupervised algorithm, thus it does not require any label.</p>
+
+<p>The idea is the following: consider a dataset $X \in \mathbb{R}^{d \times N}$ of high-dimensional data and assume we want to project it into a low-dimensional space $\mathbb{R}^k$. Define</p>
+
+\[Z = [z^1 z^2 \dots z^N] \in \mathbb{R}^{k \times N}\]
+
+<p>the projected version of $X$. We want to find a matrix $P \in \mathbb{R}^{k \times d}$ such that $Z = PX$, with the constraint that in the projected space we want to keep as much information as possible from the original data $X$.</p>
+
+<p>You already studied that, when you want to project a matrix by keeping informations, a good idea is to use the Singular Value Decomposition (SVD) of it and, in particular, the Truncated SVD (TSVD). Let $X \in \mathbb{R}^{d \times N}$, then</p>
+
+\[X = U \Sigma V^T\]
+
+<p>is the SVD of $X$, where $U \in \mathbb{R}^{d \times d}$, $V \in \mathbb{R}^{N \times N}$ are orthogonal matrices ($U^T U = U U^T = I$ and $V V^T = V^T V = I$), while $\Sigma \in \mathbb{R}^{d \times N}$ is a diagonal matrix whose diagonal elements $\sigma_i$ are the singular values of $X$, in decreasing order ($\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_d$). Since the singular values represents the <em>quantity of informations</em> contained in the corresponding singular vectors, keeping the first $k$ singular values and vectors can be the solution to our projection problem. Indeed, given $k &lt; d$, we define the Truncated SVD of $X$ as</p>
+
+\[X_k = U_k \Sigma_k V^T_k\]
+
+<p>where $U_k \in \mathbb{R}^{d \times k}$, $\Sigma_k \in \mathbb{R}^{k \times k}$, and $V_k \in \mathbb{R}^{k \times N}$.</p>
+
+<p>The PCA use this idea and defines the projection matrix as $P = U_k$, and consequently,</p>
+
+\[Z = U_k X\]
+
+<p>is the projected space. Here, the columns of $U_k$ are called <strong>feature vectors</strong>, while the columns of $Z$ are the <strong>principal components</strong> of $X$.</p>
+
+<h2 id="implementation-of-pca">Implementation of PCA</h2>
+<p>To implement PCA, we first need to <em>center</em> the data. This can be done by defining its centroid.</p>
+
+<blockquote>
+  <p><strong><em>Centroid:</em></strong> Given a set
+ \(X = [x^1 x^2 \dots x^N]\)
+its <em>centroid</em> is defined to be
+\(c(X) = \frac{1}{N} \sum_{i=1}^N x^i\)</p>
+</blockquote>
+
+<p>Thus, the implementation of PCA is as follows:</p>
+
+<ul>
+  <li>Consider the dataset $X$;</li>
+  <li>Compute the centered version of $X$ as $X_c = X - c(X)$, where the subtraction between matrix and vector is executed column-by-column;</li>
+  <li>Compute the SVD of $X_c$, $X_c = U\Sigma V^T$;</li>
+  <li>Given $k &lt; n$, compute the Truncated SVD of $X_c$: $X_{c, k} = U_k \Sigma_k V_k^T$;</li>
+  <li>Compute the projected dataset $Z_k = U_k^T X_c$;</li>
+</ul>
+:ET

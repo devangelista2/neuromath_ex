@@ -82,19 +82,31 @@ After the encoding step, the dataset is simply converted to a numpy array with t
 The result of this procedure is a matrix 
 
 $$
-X = [ x^1 \quad x^2 \quad \dots \quad x^N ]^T \in \mathbb{R}^{N \times d}
+X = [ x^1 \quad x^2 \quad \dots \quad x^N ] \in \mathbb{R}^{d \times N}
 $$
 
-where each row $x^i \in \mathbb{R}^d$ represents a datapoint with $d$ features and $N$ is the number of datapoints. The corresponding labels $y^i = f(x^i)$ for each datapoint are collected into a vector $Y = [y^1, y^2, \dots, y^N]^T \in \mathbb{R}^N$
+where each column $x^i \in \mathbb{R}^d$ represents a datapoint with $d$ features and $N$ is the number of datapoints. The corresponding labels $y^i = f(x^i)$ for each datapoint are collected into a vector $Y = [y^1, y^2, \dots, y^N]^T \in \mathbb{R}^N$
 
 ## Design
 Designing a ML model is hard and beyond the scope of this course. To us, it is sufficient to understand the main classification in which algorithms are categorized: supervised and unsupervised learning.
 
 ### Supervised Learning
-In Supervised Learning (SL), we are given 
+In Supervised Learning (SL), we are given a dataset composed by a set of inputs $X \in \mathbb{R}^{d \times N}$ and the corresponding labels $Y \in \mathbb{R}^N$. The idea of SL techniques is to use informations contained in $X$ and $Y$ to learn structures in data such that, after the training, can estimate new values of $y = f(x)$ given a new $x \in \mathbb{R}^d$.
+
+### Unsupervised Learning
+In Unsupervised Learning (UL), we are given a dataset composed by only the inputs $X \in \mathbb{R}^{d \times N}$, without any corresponding labels. The task of UL techniques is to learn pattern present in data with the intent to _classify_ new datum $x \in \mathbb{R}^d$ by retrieving its patterns.
 
 ## Training
+Training is the easiest part in the design of ML algorithms. Here, we just use informations contained into the data we have to let our model learn the patterns required to make accurate predictions. Since we are doing an experiment soon, it will be clearer how everything works.
 
 ## Tuning
+Every ML algorithms have a limited number of parameters the user have to set. Generally, those parameters can changes the flexibility of the model, making it more or less flexible depending on the task. 
+
+Tuning those parameters is important to improve the accuracy of the algorithm. This is mainly a trial-and-error procedure, where the user try changing the parameters (usually, with _knowledge_ on what they do), and train again the model, check the performance and change the parameters again, until the models does not get good results.
+
+The concept of flexibility is strongly related to the concept of **overfitting** and **underfitting**.
 
 ## Testing
+Testing the prediction ability of a ML model on the same dataset on which it has been trained is unfair. Indeed, on those data the model already observed the real outcome, and a model performing well on the _training set_ potentially just memorized each informations contained in the set, without **understanding any knowledge**. For that reason, it is important to keep a portion of the dataset unused into the Training and Tuning phases to be used to test the model. In particular, when we have $N$ available data, it is common to select a number $N_{train} < N$ and randomly extract $N_{train}$ random samples from $X$ and use only those data for the training and tuning. The remaining $N_{test} = N - N_{train}$ data can be used to test it.
+
+Test usually happens by choosing an accuracy function $\ell(y, y')$ and evaluating the mean value of $\ell(y, y')$ over the test set, where $\ell(y, y')$ is computed between the prediction of the trained model $y = f_\theta(x)$ and the true label $y' = f(x)$ for the same datum $x \in \mathbb{R}^d$.
