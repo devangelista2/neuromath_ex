@@ -1,5 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-27T10:26:05+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">NeuroMath</title><subtitle>A blog about Mathematics and Neural Networks.
-</subtitle><author><name>Davide Evangelista</name></author><entry><title type="html">Dimensionality Reduction with PCA</title><link href="http://localhost:4000/jekyll/update/2022/09/27/PCA.html" rel="alternate" type="text/html" title="Dimensionality Reduction with PCA" /><published>2022-09-27T10:00:00+02:00</published><updated>2022-09-27T10:00:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/27/PCA</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/27/PCA.html"><![CDATA[<h2 id="dimensionality-reduction">Dimensionality Reduction</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-09-27T10:38:26+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">NeuroMath</title><subtitle>A blog about Mathematics and Neural Networks.
+</subtitle><author><name>Davide Evangelista</name></author><entry><title type="html">Clustering with Linear Discriminant Analysis (LDA)</title><link href="http://localhost:4000/jekyll/update/2022/09/27/LDA.html" rel="alternate" type="text/html" title="Clustering with Linear Discriminant Analysis (LDA)" /><published>2022-09-27T10:30:00+02:00</published><updated>2022-09-27T10:30:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/27/LDA</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/27/LDA.html"><![CDATA[<h2 id="why-pca-is-not-sufficient">Why PCA is not sufficient?</h2>
+<p>Since PCA is an unsupervised learning technique, the lack of informations due to the fact that it is not using the associated label reduce its ability on observing clusters. Consequently it can be defined Linear Discriminant Analysis (LDA), a supervised version of PCA, whose ability on generating clusters is way higher.</p>
+
+<h2 id="setup-for-lda-implementation">Setup for LDA implementation</h2>
+<p>The main difference between PCA and LDA is the the latter center the dataset by shifting each column by the centroid of each class, instead of using a global centroid of the data. For simplicity, assume we have a dataset</p>
+
+\[X = [x^1 x^2 \dots x^N] \in \mathbb{R}^{d \times N}\]
+
+<p>and an associated label vector</p>
+
+\[Y = [y^1 y^2 \dots y^N]\]
+
+<p>such that $y^i$ represents the correct class of $x^i$. Assume that in our problem there are $K$ classes $C_1, \dots, C_K$ and define $I_k = [i_1, \dots, i_{N_k}]$ as the vector of the indices corresponding to the columns of $X$ associated with the class $k$ ($N_k$ is the number of elements lying in the class $k$). To simplify the discussion, assume that our dataset is ordered as</p>
+
+\[X = [X_1 X_2 \dots X_K]\]
+
+<p>where $X_k$ contains each datapoint such that the corresponding class is $k$. Now, for each class $k = 1, \dots, K$ define the class centroid</p>
+
+\[c_k(X) = \frac{1}{N_k} \sum_{i \in I_k} x^i\]
+
+<p>and the global centroid</p>
+
+\[c(X) = \frac{1}{N} \sum_{i=1}^N x^i\]
+
+<hr />
+
+<p>For any $k = 1, \dots, K$, define the centered matrix for each class</p>
+
+\[X_{k, c} = X_k - c_k(X_k)\]
+
+<p>and, by joining $X_{k, c}$ together for any $k$, we get</p>
+
+\[X_w = [X_{1, c} X_{2, c} \dots X_{K, c}]\]
+
+<p>From $X_w$, we can define the <strong>within-cluster scatter matrix</strong></p>
+
+\[S_w = X_w X_w^T\]
+
+<p>representing the <em>correlation matrix</em> for points inside of each cluster.</p>
+
+<hr />
+
+<p>Consequently, define</p>
+
+\[\bar{X}_k = [c_k c_k c_k \dots c_k] \in \mathbb{R}^{d \times N}\]
+
+\[\bar{X} = [\bar{X}_1 \bar{X}_2 \dots \bar{X}_K]\]
+
+<p>and its centered version</p>
+
+\[\bar{X}_c = \bar{X} - c(X)\]
+
+<p>Finally, we define the <strong>between clusters scattering matrix</strong></p>
+
+\[S_b = \bar{X}_c \bar{X}_c^T\]
+
+<p>This concludes the setup part.</p>
+
+<h2 id="idea-and-implementation">Idea and Implementation</h2>
+<p>Given the two matrices $S_w$ and $S_b$ defined above, we observe that $S_w$ is symmetrical, since $S_w^T = (X_w X_w^T)^T = X_w X_w^T = S_w$. If $S_w$ is also positive definite, you studied that we can compute the Cholesky decomposition of it, i.e. we can decompose</p>
+
+\[S_w = L^T L\]
+
+<p>where $L \in \mathbb{R}^{d \times d}$ is a lower-triangular matrix.</p>
+
+<p>If $S_w$ is not positive definite, we can make it positive definite by doing</p>
+
+\[S_w = S_w + \epsilon I\]
+
+<p>where $\epsilon \approx 10^{-6}$ is a small value. A matrix like that will always be positive definite.</p>
+
+<p>Now, given a number $k$ (representing the dimension on which we want to project), compute the matrix $W \in \mathbb{R}^{d \times k}$, whose column are the first $k$ eigenvectors of $L^{-T}S_bL^T$.</p>
+
+<p>Finally, if</p>
+
+\[Q = L^{-1} W\]
+
+<p>then $Q^T \in \mathbb{R}^{k \times d}$ will be the projection matrix of LDA.</p>
+
+<h2 id="implementation">Implementation</h2>
+<p>The implementation simply follows what we just described.</p>
+
+<ul>
+  <li>Given the input data $X$ and the labels $Y$;</li>
+  <li>Compute $S_w$ and $S_b$ as described above;</li>
+  <li>If possible, compute the Cholesky decomposition of $S_w = L^T L$, if not, compute the Cholesky decomposition of $S_w + \epsilon I = L^T L$;</li>
+  <li>Find the first $k$ eigenvectors of $L^{-T}S_bL^T$ and collect them in a matrix $W$;</li>
+  <li>Compute $Q = L^{-1} W$ and $Q^T$.</li>
+  <li>Since $Q^T$ is the projection matrix, we can project $X$ into $Z$ as $Z = Q^T X$.</li>
+</ul>]]></content><author><name>Davide Evangelista</name></author><category term="jekyll" /><category term="update" /><category term="featured" /><summary type="html"><![CDATA[Why PCA is not sufficient? Since PCA is an unsupervised learning technique, the lack of informations due to the fact that it is not using the associated label reduce its ability on observing clusters. Consequently it can be defined Linear Discriminant Analysis (LDA), a supervised version of PCA, whose ability on generating clusters is way higher.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/PCA/header.jpeg" /><media:content medium="image" url="http://localhost:4000/assets/images/PCA/header.jpeg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Dimensionality Reduction with PCA</title><link href="http://localhost:4000/jekyll/update/2022/09/27/PCA.html" rel="alternate" type="text/html" title="Dimensionality Reduction with PCA" /><published>2022-09-27T10:00:00+02:00</published><updated>2022-09-27T10:00:00+02:00</updated><id>http://localhost:4000/jekyll/update/2022/09/27/PCA</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2022/09/27/PCA.html"><![CDATA[<h2 id="dimensionality-reduction">Dimensionality Reduction</h2>
 <p>While working with data, it is common to have access to very high-dimensional unstructured informations (e.g. images, sounds, …). To work with them, it is necessary to find a way to project them into a low-dimensional space where data which is semantically similar is close. This approach is called <strong>dimensionality reduction</strong>.</p>
 
 <p>For example, assume our data can be stored in an $d \times N$ array,
