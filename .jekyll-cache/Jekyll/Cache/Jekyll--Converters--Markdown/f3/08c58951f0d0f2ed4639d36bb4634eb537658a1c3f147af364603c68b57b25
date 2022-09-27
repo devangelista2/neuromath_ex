@@ -1,0 +1,3 @@
+I"Œ<h2 id="why-pca-is-not-sufficient">Why PCA is not sufficient?</h2>
+<p>Since PCA is an unsupervised learning technique, the lack of informations due to the fact that it is not using the associated label reduce its ability on observing clusters. Consequently it can be defined Linear Discriminant Analysis (LDA), a supervised version of PCA, whose ability on generating clusters is way higher.</p>
+:ET
